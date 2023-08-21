@@ -4,7 +4,7 @@ import env from './config/env'
 
 const server = fastify();
 
-server.get('/ping', async (request, reply) => {
+server.get('/ping', async () => {
   return 'pong\n'
 })
 
