@@ -1,12 +1,12 @@
 import 'dotenv/config';
-import fastify from 'fastify'
-import env from './config/env'
+import fastify from 'fastify';
+import env from './config/env';
+
+import registerRouter from './routes/register';
 
 const server = fastify();
 
-server.get('/ping', async () => {
-  return 'pong\n'
-})
+server.register(registerRouter, { prefix: '/register' });
 
 server.listen({ port: env.PORT }, (err, address) => {
   if (err) {
