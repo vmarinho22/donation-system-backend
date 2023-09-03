@@ -1,10 +1,11 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyInstance } from 'fastify';
+import registerController from '../controllers/register';
 
 const registerRouter = async (fastify: FastifyInstance) => {
   // Middleware example
   // fastify.register(authenticate);
 
-  fastify.get('/', (_req: FastifyRequest, _reply: FastifyReply) => _reply.send({ Hello: 'World'}));
+  fastify.post('/', registerController.register);
 };
 
 export default registerRouter;

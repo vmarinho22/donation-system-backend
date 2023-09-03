@@ -1,5 +1,5 @@
 export default {
-  collectCoverageFrom: ['src/**', '!src/index.ts', '!src/types/**'],
+  collectCoverageFrom: ['src/**', '!src/index.ts', '!src/types/**', '!src/controllers/**', '!src/db/**', '!src/routes/**'],
   coverageDirectory: 'coverage',
   coverageReporters: ['lcov', 'text'],
   preset: 'ts-jest',

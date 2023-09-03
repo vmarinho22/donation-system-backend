@@ -4,7 +4,7 @@ export const address = pgTable('address', {
   id: uuid('id').defaultRandom().primaryKey(),
   postalCode: integer('postal_code').notNull(),
   street: varchar('street', { length: 255 }).notNull(),
-  number: integer('number').notNull(),
+  number: integer('number'),
   noNumber: boolean('no_number').default(false),
   complement: varchar('complement', { length: 255 }),
   district: varchar('district', { length: 255 }).notNull(),

@@ -17,12 +17,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "sex" AS ENUM('man', 'woman', 'other');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  CREATE TYPE "intensity_allergies" AS ENUM('low', 'medium', 'hight');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -35,7 +29,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "roles" AS ENUM('user', 'admin', 'entity', 'doctor');
+ CREATE TYPE "roles" AS ENUM('patient', 'admin', 'entity', 'doctor');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -44,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "address" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"postal_code" integer NOT NULL,
 	"street" varchar(255) NOT NULL,
-	"number" integer NOT NULL,
+	"number" integer,
 	"no_number" boolean DEFAULT false,
 	"complement" varchar(255),
 	"district" varchar(255) NOT NULL,
@@ -128,16 +122,6 @@ CREATE TABLE IF NOT EXISTS "profiles" (
 	"social_name" varchar(255),
 	"lang" "langs" DEFAULT 'pt_br',
 	"photo_url" varchar(255) NOT NULL,
-	"birth_date" timestamp NOT NULL,
-	"cpf" varchar(11) NOT NULL,
-	"rg" varchar(9) NOT NULL,
-	"phone" varchar(14) NOT NULL,
-	"tel" varchar(14),
-	"sex" "sex",
-	"gender" varchar(125) NOT NULL,
-	"age" integer NOT NULL,
-	"height" real NOT NULL,
-	"weight" real NOT NULL,
 	"address_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
@@ -178,10 +162,10 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"password" varchar(255) NOT NULL,
-	"role" "roles" DEFAULT 'user',
+	"cpf" varchar(11) NOT NULL,
+	"role" "roles" DEFAULT 'patient',
+	"last_login" timestamp DEFAULT now(),
 	"profile_id" uuid NOT NULL,
-	"medical_record_id" uuid NOT NULL,
-	"blood_data_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "users_email_unique" UNIQUE("email")
@@ -242,18 +226,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "users" ADD CONSTRAINT "users_profile_id_profiles_id_fk" FOREIGN KEY ("profile_id") REFERENCES "profiles"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "users" ADD CONSTRAINT "users_medical_record_id_medical_records_id_fk" FOREIGN KEY ("medical_record_id") REFERENCES "medical_records"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "users" ADD CONSTRAINT "users_blood_data_id_bloods_id_fk" FOREIGN KEY ("blood_data_id") REFERENCES "bloods"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

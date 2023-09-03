@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "8acb8930-0415-479d-a2ab-c071d21410e1",
+  "id": "3489cf4c-ce46-4e52-9006-20bfa98d4700",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "address": {
@@ -31,7 +31,7 @@
           "name": "number",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "no_number": {
           "name": "no_number",
@@ -547,66 +547,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "birth_date": {
-          "name": "birth_date",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "cpf": {
-          "name": "cpf",
-          "type": "varchar(11)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "rg": {
-          "name": "rg",
-          "type": "varchar(9)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "phone": {
-          "name": "phone",
-          "type": "varchar(14)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "tel": {
-          "name": "tel",
-          "type": "varchar(14)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sex": {
-          "name": "sex",
-          "type": "sex",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "gender": {
-          "name": "gender",
-          "type": "varchar(125)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "age": {
-          "name": "age",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "height": {
-          "name": "height",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "weight": {
-          "name": "weight",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true
-        },
         "address_id": {
           "name": "address_id",
           "type": "uuid",
@@ -885,27 +825,28 @@
           "primaryKey": false,
           "notNull": true
         },
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "role": {
           "name": "role",
           "type": "roles",
           "primaryKey": false,
           "notNull": false,
-          "default": "'user'"
+          "default": "'patient'"
+        },
+        "last_login": {
+          "name": "last_login",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
         },
         "profile_id": {
           "name": "profile_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "medical_record_id": {
-          "name": "medical_record_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "blood_data_id": {
-          "name": "blood_data_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -933,32 +874,6 @@
           "tableTo": "profiles",
           "columnsFrom": [
             "profile_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "users_medical_record_id_medical_records_id_fk": {
-          "name": "users_medical_record_id_medical_records_id_fk",
-          "tableFrom": "users",
-          "tableTo": "medical_records",
-          "columnsFrom": [
-            "medical_record_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "users_blood_data_id_bloods_id_fk": {
-          "name": "users_blood_data_id_bloods_id_fk",
-          "tableFrom": "users",
-          "tableTo": "bloods",
-          "columnsFrom": [
-            "blood_data_id"
           ],
           "columnsTo": [
             "id"
@@ -1118,14 +1033,6 @@
         "en_us": "en_us"
       }
     },
-    "sex": {
-      "name": "sex",
-      "values": {
-        "man": "man",
-        "woman": "woman",
-        "other": "other"
-      }
-    },
     "intensity_allergies": {
       "name": "intensity_allergies",
       "values": {
@@ -1146,7 +1053,7 @@
     "roles": {
       "name": "roles",
       "values": {
-        "user": "user",
+        "patient": "patient",
         "admin": "admin",
         "entity": "entity",
         "doctor": "doctor"

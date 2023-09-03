@@ -9,6 +9,7 @@
     "start": "node dist/index.js",
     "generate": "drizzle-kit generate:pg",
     "migrate": "tsx src/db/migration.ts",
+    "seed": "tsx src/db/seeding.ts",
     "dev": "tsx watch src/index.ts --onSuccess \"npm run start\"",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "test": "jest --detectOpenHandles --passWithNoTests",
@@ -18,14 +19,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/jwt": "^7.2.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.2",
+    "drizzle-zod": "^0.5.0",
     "fastify": "^4.21.0",
-    "postgres": "^3.3.5"
+    "postgres": "^3.3.5",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.5.1",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
