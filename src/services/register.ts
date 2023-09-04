@@ -33,6 +33,7 @@ async function register(data: registerDTO) {
   const hashedPassword: string = await bcrypt.hash(parsedUser.password, 12);
 
   let userId = undefined;
+  let role = undefined
 
   await dbClient.transaction(async (trx) => {
     const addressData = await trx.insert(address).values(parsedAddress).returning({ id: address.id });
@@ -42,12 +43,13 @@ async function register(data: registerDTO) {
       ...parsedUser,
       password: hashedPassword,
       profileId: profileData[0].id, 
-    }).returning({ id: users.id });
+    }).returning({ id: users.id, role: users.role });
 
     userId = userData[0].id;
+    role = userData[0].role;
   });
 
-  const token = server.jwt.sign({ userId }, { expiresIn: '1d' })
+  const token = server.jwt.sign({ userId, role  }, { expiresIn: '1d' })
 
   return token as string;
 }
