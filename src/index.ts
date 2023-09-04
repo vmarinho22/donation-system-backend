@@ -5,6 +5,7 @@ import jwt from '@fastify/jwt';
 
 import registerRouter from './routes/register';
 import ApiError from './utils/errors/apiError';
+import userRouter from './routes/user';
 
 export const server = fastify({
   logger: false
@@ -15,6 +16,7 @@ server.register(jwt, {
 })
 
 server.register(registerRouter, { prefix: '/signup' });
+server.register(userRouter, { prefix: '/users' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
