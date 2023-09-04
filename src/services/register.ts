@@ -47,7 +47,7 @@ async function register(data: registerDTO) {
     userId = userData[0].id;
   });
 
-  const token = server.jwt.sign({ userId })
+  const token = server.jwt.sign({ userId }, { expiresIn: '1d' })
 
   return token as string;
 }

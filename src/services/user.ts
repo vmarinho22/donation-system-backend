@@ -32,6 +32,20 @@ async function getUnique(id: string): Promise<User | null> {
   return returnedUser[0];
 }
 
+async function getAll(): Promise<User[]> {
+  const returnedUsers = await dbClient.select({
+    id: users.id,
+    email: users.email,
+    role: users.role,
+    lastLogin: users.lastLogin,
+    createdAt: users.createdAt,
+    updatedAt: users.updatedAt,
+  }).from(users);
+
+  return returnedUsers;
+}
+
 export default {
-  getUnique
+  getUnique,
+  getAll
 }

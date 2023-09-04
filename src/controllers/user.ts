@@ -25,6 +25,23 @@ async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply
   _reply.send({ id });
 }
 
+async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
+  console.log(_req.user)
+  try {
+    const users = await userService.getAll();
+
+    _reply.send(users);
+  } catch (error) {
+
+    if (error instanceof ApiError) {
+      throw error;
+    }
+
+    throw new ApiError(500, (error as Error).message);
+  }
+}
+
 export default {
-  getUnique
+  getUnique,
+  getAll
 }
