@@ -32,7 +32,9 @@ describe('user service', () => {
       }));
   
       const user = await userService.getUnique(mockedReturnedUser.id);
+      
       expect(user).toBeDefined();
+      expect(user).toEqual(mockedReturnedUser);
     });
 
     it('should return null if the user is not found', async () => {
@@ -45,8 +47,31 @@ describe('user service', () => {
       }));
   
       const user = await userService.getUnique(mockedReturnedUser.id);
+
       expect(user).toBeNull();
     });
   });
 
+  describe('getAll', () => {
+    it('should return all users', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: jest.fn().mockResolvedValue([mockedReturnedUser]),
+      }));
+  
+      const users = await userService.getAll();
+
+      expect(users).toBeDefined();
+      expect(users).toEqual([mockedReturnedUser]);
+    });
+
+    it('should return null if the user is not found', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: jest.fn().mockResolvedValue([]),
+      }));
+  
+      const users = await userService.getAll();
+
+      expect(users).toHaveLength(0);
+    });
+  });
 });
