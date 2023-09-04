@@ -26,7 +26,6 @@ async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply
 }
 
 async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
-  console.log(_req.user)
   try {
     const users = await userService.getAll();
 
