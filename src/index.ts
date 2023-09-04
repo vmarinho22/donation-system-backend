@@ -1,7 +1,9 @@
 import 'dotenv/config';
 import fastify from 'fastify';
 import env from './config/env';
+
 import jwt from '@fastify/jwt';
+import cors from '@fastify/cors'
 
 import registerRouter from './routes/register';
 import ApiError from './utils/errors/apiError';
@@ -13,7 +15,13 @@ export const server = fastify({
 
 server.register(jwt, {
   secret: env.SECRET
-})
+});
+
+server.register(cors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+});
 
 server.register(registerRouter, { prefix: '/signup' });
 server.register(userRouter, { prefix: '/users' });
