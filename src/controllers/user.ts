@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import ApiError from "../utils/errors/apiError";
 import userService from '../services/user'
+import errorDistributor from "../utils/errorDistributor";
 
 async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
   const { id } = _req.params;
@@ -14,15 +15,8 @@ async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply
 
     _reply.send(user);
   } catch (error) {
-
-    if (error instanceof ApiError) {
-      throw error;
-    }
-
-    throw new ApiError(500, (error as Error).message);
+    errorDistributor(error);
   }
-
-  _reply.send({ id });
 }
 
 async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
@@ -31,16 +25,11 @@ async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
 
     _reply.send(users);
   } catch (error) {
-
-    if (error instanceof ApiError) {
-      throw error;
-    }
-
-    throw new ApiError(500, (error as Error).message);
+    errorDistributor(error);
   }
 }
 
 export default {
   getUnique,
   getAll
-}
+};

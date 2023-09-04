@@ -5,7 +5,7 @@ import { InferModel } from "drizzle-orm";
 import { users } from "../db/schema/users";
 import { profiles } from "../db/schema/profiles";
 import ApiError from "../utils/errors/apiError";
-import { ZodError } from 'zod';
+import errorDistributor from '../utils/errorDistributor';
 
 
 export type registerDTO = {
@@ -31,19 +31,7 @@ async function register(_req: FastifyRequest<{ Body: registerDTO }>, _reply: Fas
     const token = await registerService.register({ user, profile, address});
     _reply.send({ token });
   } catch (error) {
-    const returnedError = {
-      message: '',
-      code: 500,
-    };
-
-    if (error instanceof ZodError) {
-      const errorData = error as ZodError;
-      returnedError.message = `Invalid type of data: ${errorData.errors.map((error) => error.path.join('')).join(', ')}`
-    }
-
-    returnedError.message = (error as Error).message;
-
-    throw new ApiError(returnedError.code, returnedError.message);
+    errorDistributor(error);
   }
 }
 
