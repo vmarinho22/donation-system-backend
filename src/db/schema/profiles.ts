@@ -10,6 +10,7 @@ export const profiles = pgTable('profiles', {
   socialName: varchar('social_name', { length: 255 }),
   lang: langEnum('lang').default('pt_br'),
   photoUrl: varchar('photo_url', { length: 255 }).notNull(),
+  phone: varchar('phone', { length: 255 }).notNull(),
   addressId: uuid('address_id').references(() => address.id).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

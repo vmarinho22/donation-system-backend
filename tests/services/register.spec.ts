@@ -25,6 +25,7 @@ describe('register service', () => {
     firstName: "Test",
     lastName: "Test",
     photoUrl: "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+    phone: "5511999999999",
     addressId: "184e3edc-f1d3-4844-8766-310701a3eae7"
   }
 

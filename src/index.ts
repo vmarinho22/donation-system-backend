@@ -9,6 +9,7 @@ import cors from '@fastify/cors'
 import registerRouter from './routes/register';
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
+import recoveryPasswordRouter from './routes/recoveryPassword';
 
 export const server = fastify({
   logger: false
@@ -27,6 +28,7 @@ server.register(cors, {
 server.register(registerRouter, { prefix: '/signup' });
 server.register(userRouter, { prefix: '/users' });
 server.register(authRouter, { prefix: '/auth' });
+server.register(recoveryPasswordRouter, { prefix: '/recovery-password' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
