@@ -1,0 +1,1 @@
+ALTER TABLE "user_password_recoveries" ADD COLUMN "message_id" text;

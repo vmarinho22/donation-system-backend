@@ -22,6 +22,7 @@ async function register(data: registerDTO) {
     firstName: z.string(),
     lastName: z.string(),
     photoUrl: z.string().url(),
+    phone: z.string(),
   });
 
   const addressInsertSchema = createInsertSchema(address);
