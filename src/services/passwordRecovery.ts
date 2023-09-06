@@ -7,6 +7,7 @@ import { users } from '../db/schema/users';
 import { userPasswordRecovery } from '../db/schema/userPasswordRecoveries';
 import ApiError from '../utils/errors/apiError';
 import { z } from 'zod';
+import bcrypt from 'bcryptjs';
 
 const MAX_CODE_LIFE_TIME_IN_HOUR = 3;
 
@@ -64,6 +65,8 @@ async function validateRecoveryCode(email: string, code: number) {
   const isValidCode = validateCodeLifeTime(returnedUser[0].validate as Date);
 
   if (!isValidCode) throw new ApiError(401, "The provided code is expired");
+  
+  return returnedUser[0].id;
 }
 
 function validateCodeLifeTime (validate: Date): boolean {
@@ -75,7 +78,25 @@ function validateCodeLifeTime (validate: Date): boolean {
   return hours <= MAX_CODE_LIFE_TIME_IN_HOUR;
 }
 
+async function changePassword(email: string, password: string, code: number) {
+
+  const dataSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(8).max(30),
+    code: z.number(),
+  }).parse({ email, password, code });
+  
+  const user = await validateRecoveryCode(dataSchema.email, dataSchema.code);
+
+  const hashedPassword: string = await bcrypt.hash(dataSchema.password, 12);
+
+  const updatedUser = await dbClient.update(users).set({ password: hashedPassword }).where(eq(users.id, user)).returning({ id: users.id });
+
+  if (updatedUser.length === 0) throw new ApiError(500, "Internal server error");
+}
+
 export default {
   sendRecoveryCode,
-  validateRecoveryCode
+  validateRecoveryCode,
+  changePassword
 }

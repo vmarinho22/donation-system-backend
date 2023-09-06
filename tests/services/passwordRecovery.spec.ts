@@ -14,6 +14,8 @@ describe('passwordRecovery service', () => {
   let mockReturning: jest.Mock;
   let mockOrderBy: jest.Mock;
   let mockLimit: jest.Mock;
+  let mockUpdate: jest.Mock;
+  let mockSet: jest.Mock;
 
   beforeAll(() => {
     mockSelect = jest.fn().mockReturnThis();
@@ -26,9 +28,14 @@ describe('passwordRecovery service', () => {
 
     mockOrderBy = jest.fn().mockReturnThis();
     mockLimit = jest.fn().mockReturnThis();
+    
+    mockUpdate = jest.fn().mockReturnThis();
+    mockSet = jest.fn().mockReturnThis();
 
     dbClient.select = mockSelect;
     dbClient.insert = mockInsert;
+    dbClient.update = mockUpdate;
+
     smsClient.send = jest.fn().mockResolvedValue({
       messages: [
         {
@@ -110,6 +117,32 @@ describe('passwordRecovery service', () => {
       await passwordRecoveryService.validateRecoveryCode("test@test.com", mockedReturnedUser.code);
 
       expect(dbClient.select).toHaveBeenCalled();
+    });
+  });
+
+  describe('changePassword', () => {
+    const userId = "184e3edc-f1d3-4844-8766-310701a3eae7";
+
+    it('should change the user password', async () => {
+      passwordRecoveryService.validateRecoveryCode = jest.fn().mockResolvedValue(userId);
+
+      mockUpdate.mockImplementation(() => ({
+        set: mockSet,
+      }));
+
+      mockSet.mockImplementation(() => ({
+        where: mockReturning,
+      }));
+
+      mockReturning.mockImplementation(() => ({
+        returning: jest.fn().mockResolvedValue([{
+          id: userId
+        }])
+      }));
+      
+      await passwordRecoveryService.changePassword("test@test.com", "12345678", 123456);
+
+      expect(dbClient.insert).toHaveBeenCalled();
     });
   });
 });
