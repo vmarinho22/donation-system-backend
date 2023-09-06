@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import dbClient from '../clients/db';
 import smsClient from '../clients/sms';
 import env from "../config/env";
@@ -6,14 +6,9 @@ import { profiles } from '../db/schema/profiles';
 import { users } from '../db/schema/users';
 import { userPasswordRecovery } from '../db/schema/userPasswordRecoveries';
 import ApiError from '../utils/errors/apiError';
+import { z } from 'zod';
 
-function generateRandomCode() {
-  const min = 100000;
-  const max = 999999;
-  const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
-
-  return randomCode;
-}
+const MAX_CODE_LIFE_TIME_IN_HOUR = 3;
 
 async function sendRecoveryCode(phone: string) {
   const code = generateRandomCode();
@@ -39,6 +34,48 @@ async function sendRecoveryCode(phone: string) {
   if (createdPasswordRecovery.length === 0) throw new ApiError(500, "Internal server error");
 }
 
+function generateRandomCode() {
+  const min = 100000;
+  const max = 999999;
+  const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return randomCode;
+}
+
+async function validateRecoveryCode(email: string, code: number) {
+
+  const dataValidation = z.object({
+    email: z.string().email(),
+    code: z.number().min(100000).max(999999),
+  }).parse({ email, code });
+
+  const returnedUser = await dbClient.select({
+    id: users.id,
+    code: userPasswordRecovery.code,
+    validate: userPasswordRecovery.validate,
+  }).from(users).leftJoin(userPasswordRecovery, eq(userPasswordRecovery.userId, users.id)).where(
+    and(
+      eq(users.email, dataValidation.email), 
+      eq(userPasswordRecovery.code, dataValidation.code))
+  ).orderBy(desc(userPasswordRecovery.createdAt)).limit(1);
+
+  if (returnedUser.length === 0) throw new ApiError(401, "The provided code is invalid");
+
+  const isValidCode = validateCodeLifeTime(returnedUser[0].validate as Date);
+
+  if (!isValidCode) throw new ApiError(401, "The provided code is expired");
+}
+
+function validateCodeLifeTime (validate: Date): boolean {
+  const now = new Date();
+  const diff = now.getTime() - validate.getTime();
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(minutes / 60);
+
+  return hours <= MAX_CODE_LIFE_TIME_IN_HOUR;
+}
+
 export default {
-  sendRecoveryCode
+  sendRecoveryCode,
+  validateRecoveryCode
 }

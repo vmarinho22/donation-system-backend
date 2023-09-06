@@ -12,11 +12,8 @@ describe('passwordRecovery service', () => {
   let mockInsert: jest.Mock;
   let mockValues: jest.Mock;
   let mockReturning: jest.Mock;
-
-  const mockedReturnedUser = {
-    id: "184e3edc-f1d3-4844-8766-310701a3eae7",
-    phone: "5512123451234"
-  }
+  let mockOrderBy: jest.Mock;
+  let mockLimit: jest.Mock;
 
   beforeAll(() => {
     mockSelect = jest.fn().mockReturnThis();
@@ -26,6 +23,9 @@ describe('passwordRecovery service', () => {
     mockInsert = jest.fn().mockReturnThis();
     mockValues = jest.fn().mockReturnThis();
     mockReturning = jest.fn().mockReturnThis();
+
+    mockOrderBy = jest.fn().mockReturnThis();
+    mockLimit = jest.fn().mockReturnThis();
 
     dbClient.select = mockSelect;
     dbClient.insert = mockInsert;
@@ -39,6 +39,10 @@ describe('passwordRecovery service', () => {
   });
 
   describe('sendRecoveryCode', () => {
+    const mockedReturnedUser = {
+      id: "184e3edc-f1d3-4844-8766-310701a3eae7",
+      phone: "5512123451234"
+    }
 
     it ('should send a recovery code', async () => {
       mockSelect.mockImplementation(() => ({
@@ -71,6 +75,41 @@ describe('passwordRecovery service', () => {
 
       expect(dbClient.select).toHaveBeenCalled();
       expect(smsClient.send).toHaveBeenCalled();
+    });
+  });
+
+  describe('validateRecoveryCode', () => {
+    const mockedReturnedUser = {
+      id: "184e3edc-f1d3-4844-8766-310701a3eae7",
+      code: 123456,
+      validate: new Date()
+    };
+
+    it('should validate a recovery code', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+  
+      mockFrom.mockImplementation(() => ({
+        leftJoin: mockLeftJoin,
+      }));
+
+      mockLeftJoin.mockImplementation(() => ({
+        where: mockOrderBy,
+      }));
+
+      mockOrderBy.mockImplementation(() => ({
+        orderBy: mockLimit,
+      }));
+
+      mockLimit.mockImplementation(() => ({
+        limit: jest.fn().mockResolvedValue([mockedReturnedUser]),
+      }));
+      
+
+      await passwordRecoveryService.validateRecoveryCode("test@test.com", mockedReturnedUser.code);
+
+      expect(dbClient.select).toHaveBeenCalled();
     });
   });
 });
