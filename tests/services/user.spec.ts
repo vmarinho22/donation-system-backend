@@ -6,6 +6,8 @@ jest.mock('../../src/clients/db');
 describe('user service', () => {
   let mockSelect: jest.Mock;
   let mockFrom: jest.Mock;
+  let mockUpdate: jest.Mock;
+  let mockSet: jest.Mock;
 
   const mockedReturnedUser = {
     id: "184e3edc-f1d3-4844-8766-310701a3eae7",
@@ -17,8 +19,13 @@ describe('user service', () => {
   beforeAll(() => {
     mockSelect = jest.fn().mockReturnThis();
     mockFrom = jest.fn().mockReturnThis();
+    
+    mockUpdate = jest.fn().mockReturnThis();
+    mockSet = jest.fn().mockReturnThis();
+
 
     dbClient.select = mockSelect;
+    dbClient.update = mockUpdate;
   });
 
   describe('getUnique', () => {
@@ -72,6 +79,31 @@ describe('user service', () => {
       const users = await userService.getAll();
 
       expect(users).toHaveLength(0);
+    });
+  });
+
+  describe('update', () => {
+    it('should return true if the user is updated', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+  
+      mockFrom.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedUser]),
+      }));
+
+      mockUpdate.mockImplementation(() => ({
+        set: mockFrom,
+      }));
+  
+      mockSet.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([{ id: mockedReturnedUser.id }]),
+      }));
+
+      const hasUpdated = await userService.update(mockedReturnedUser.id, { email: 'test@test.com'});
+
+      expect(hasUpdated).toBeTruthy();
+      expect(mockUpdate).toHaveBeenCalledTimes(1);
     });
   });
 });

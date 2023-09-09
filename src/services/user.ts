@@ -2,16 +2,17 @@ import { users } from "../db/schema/users";
 import dbClient from '../clients/db';
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { Roles } from "../types/roles";
 
-type User = {
-  id: string;
-  email: string;
-  role: Roles | null;
-  lastLogin: Date | null;
-  createdAt: Date | null;
-  updatedAt: Date | null;
-}
+const userSchema = z.object({
+  id: z.string().uuid(),
+  email: z.string().email(),
+  role: z.enum(["patient", "admin", "entity", "doctor"]).nullable(),
+  lastLogin: z.date().nullable(),
+  createdAt: z.date().nullable(),
+  updatedAt: z.date().nullable(),
+});
+
+export type User = z.infer<typeof userSchema>;
 
 async function getUnique(id: string): Promise<User | null> {
   const idSchema = z.string().uuid();
@@ -45,7 +46,22 @@ async function getAll(): Promise<User[]> {
   return returnedUsers;
 }
 
+async function update(id: string, user: Partial<User>): Promise<boolean | null> {
+  const parsedId = z.string().uuid().parse(id);
+
+  const returnedUser = await dbClient.select({ id: users.id }).from(users).where(eq(users.id, parsedId));
+
+  if (returnedUser.length === 0) return null;
+
+  const partialUser = userSchema.partial().parse(user);
+
+  await dbClient.update(users).set(partialUser).where(eq(users.id, parsedId));
+
+  return true;
+}
+
 export default {
   getUnique,
-  getAll
+  getAll,
+  update
 }
