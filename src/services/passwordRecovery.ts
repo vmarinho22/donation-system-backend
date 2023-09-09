@@ -8,6 +8,7 @@ import { userPasswordRecovery } from '../db/schema/userPasswordRecoveries';
 import ApiError from '../utils/errors/apiError';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
+import lang from '../config/lang';
 
 const MAX_CODE_LIFE_TIME_IN_HOUR = 3;
 
@@ -21,7 +22,7 @@ async function sendRecoveryCode(phone: string) {
 
   if (returnedUser.length === 0) throw new ApiError(404, "User not found");
 
-  const sendedSMS = await smsClient.send({ to: phone, from: env.SMS.FROM, text: `Seu codigo de recuperacao é: ${code}\n` });
+  const sendedSMS = await smsClient.send({ to: phone, from: env.SMS.FROM, text: lang.t('recoveryPassword:codeMessage', { code }) });
 
   const messageId = sendedSMS.messages[0]["message-id"];
 
@@ -32,7 +33,7 @@ async function sendRecoveryCode(phone: string) {
     validate: new Date() 
   }).returning({ id: userPasswordRecovery.id  });
 
-  if (createdPasswordRecovery.length === 0) throw new ApiError(500, "Internal server error");
+  if (createdPasswordRecovery.length === 0) throw new ApiError(500, lang.t('error:internalError'));
 }
 
 function generateRandomCode() {
@@ -60,11 +61,11 @@ async function validateRecoveryCode(email: string, code: number) {
       eq(userPasswordRecovery.code, dataValidation.code))
   ).orderBy(desc(userPasswordRecovery.createdAt)).limit(1);
 
-  if (returnedUser.length === 0) throw new ApiError(401, "The provided code is invalid");
+  if (returnedUser.length === 0) throw new ApiError(401, lang.t('recoveryPassword:invalidCode'));
 
   const isValidCode = validateCodeLifeTime(returnedUser[0].validate as Date);
 
-  if (!isValidCode) throw new ApiError(401, "The provided code is expired");
+  if (!isValidCode) throw new ApiError(401, lang.t('recoveryPassword:expiredCode'));
   
   return returnedUser[0].id;
 }
@@ -92,7 +93,7 @@ async function changePassword(email: string, password: string, code: number) {
 
   const updatedUser = await dbClient.update(users).set({ password: hashedPassword }).where(eq(users.id, user)).returning({ id: users.id });
 
-  if (updatedUser.length === 0) throw new ApiError(500, "Internal server error");
+  if (updatedUser.length === 0) throw new ApiError(500, lang.t('error:internalError'));
 }
 
 export default {

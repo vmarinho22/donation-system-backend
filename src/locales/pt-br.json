@@ -1,0 +1,19 @@
+{
+  "error": {
+    "internalError": "Erro interno do servidor",
+    "missingData": "O dado '{{ key }}' é obrigatório.",
+    "credentialInvalid": "Credenciais inválidas",
+    "unauthorized": "Não autorizado"
+  },
+  "auth": {
+    "unauthorized": "Não autorizado"
+  },
+  "user": {
+    "notFound": "Usuário não encontrado"
+  },
+  "recoveryPassword": {
+    "codeMessage": "Seu codigo de verificacao e: {{ code }}",
+    "invalidCode": "O código enviado está expirado!",
+    "expiredCode": "O código enviado está expirado!"
+  }
+}

@@ -10,7 +10,7 @@ async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply
     const user = await userService.getUnique(id);
 
     if (!user) {
-      throw new ApiError(404, 'User not found');
+      throw new ApiError(404, _req.t('user:notFound'));
     }
 
     _reply.send(user);
@@ -36,7 +36,7 @@ async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Parti
     const user = await userService.update(id, body);
 
     if (!user) {
-      throw new ApiError(404, 'User not found');
+      throw new ApiError(404, _req.t('user:notFound'));
     }
 
     _reply.send({ success: user });
@@ -52,7 +52,7 @@ async function updateLastLogin(_req: FastifyRequest<{ Params: { id: string }}>, 
     const user = await userService.update(id, { lastLogin: new Date() });
 
     if (!user) {
-      throw new ApiError(404, 'User not found');
+      throw new ApiError(404, _req.t('user:notFound'));
     }
 
     _reply.send({ success: user });
