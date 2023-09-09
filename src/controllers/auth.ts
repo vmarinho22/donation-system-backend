@@ -10,8 +10,6 @@ type authenticateDTO = {
 
 async function authenticate(_req: FastifyRequest<{ Body: authenticateDTO }>, _reply: FastifyReply) {
   const body = _req.body ?? {};
-  const lang = _req.language;
-  console.log(lang);
 
   const dataValidation = ['email', 'password'];
 
