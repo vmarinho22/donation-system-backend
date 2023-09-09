@@ -21,7 +21,7 @@ async function register(_req: FastifyRequest<{ Body: registerDTO }>, _reply: Fas
 
   for(const data of dataValidation) {
     if (!Object.hasOwn(body, data)) {
-      throw new ApiError(400, `Missing ${data} data`);
+      throw new ApiError(400, _req.t('error:missingData', { key: data }));
     }
   }
   

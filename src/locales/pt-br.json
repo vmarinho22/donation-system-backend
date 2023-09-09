@@ -1,0 +1,12 @@
+{
+  "error": {
+    "missingData": "O dado '{{ key }}' é obrigatório.",
+    "credentialInvalid": "Credenciais inválidas"
+  },
+  "auth": {
+    "unauthorized": "Não autorizado"
+  },
+  "user": {
+    "notFound": "Usuário não encontrado"
+  }
+}

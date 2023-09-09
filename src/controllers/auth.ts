@@ -10,12 +10,14 @@ type authenticateDTO = {
 
 async function authenticate(_req: FastifyRequest<{ Body: authenticateDTO }>, _reply: FastifyReply) {
   const body = _req.body ?? {};
+  const lang = _req.language;
+  console.log(lang);
 
   const dataValidation = ['email', 'password'];
 
   for(const data of dataValidation) {
     if (!Object.hasOwn(body, data)) {
-      throw new ApiError(400, `Missing ${data} data`);
+      throw new ApiError(400, _req.t('error:missingData', { key: data }));
     }
   }
 
@@ -25,7 +27,7 @@ async function authenticate(_req: FastifyRequest<{ Body: authenticateDTO }>, _re
     const token = await authService.authenticate(email, password);
 
     if (!token) {
-      throw new ApiError(401, 'Invalid credentials');
+      throw new ApiError(401, _req.t('error:credentialInvalid'));
     }
 
     _reply.send({ token });
