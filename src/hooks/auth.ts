@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import lang from "../config/lang";
 
 async function auth(_req: FastifyRequest, _reply: FastifyReply) {
 
@@ -7,7 +8,7 @@ async function auth(_req: FastifyRequest, _reply: FastifyReply) {
       maxAge: '1d'
     })
   } catch  {
-    _reply.code(401).send({ error: true, message: 'Unauthorized' });
+    _reply.code(401).send({ error: true, message: lang.t('error:unauthorized') });
   }
 
 }

@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import fastify from 'fastify';
 import env from './config/env';
-import i18next from 'i18next';
 import i18nHttpMiddleware from 'i18next-http-middleware';
 import ApiError from './utils/errors/apiError';
 import jwt from '@fastify/jwt';
@@ -12,17 +11,7 @@ import userRouter from './routes/user';
 import authRouter from './routes/auth';
 import recoveryPasswordRouter from './routes/recoveryPassword';
 
-import ptLocale from './locales/pt-br.json';
-
-i18next.use(i18nHttpMiddleware.LanguageDetector).init({
-  lng: 'pt-BR',
-  preload: ['pt-BR'],
-  fallbackLng: 'pt-BR',
-  debug: true,
-  resources: {
-    "pt-BR": ptLocale
-  }
-})
+import lang from './config/lang';
 
 export const server = fastify({
   logger: false
@@ -39,7 +28,7 @@ server.register(cors, {
 });
 
 server.register(i18nHttpMiddleware.plugin, {
-  i18next,
+  i18next: lang,
 })
 
 server.register(registerRouter, { prefix: '/signup' });
@@ -57,7 +46,7 @@ server.setErrorHandler(function (error, request, reply) {
   } else if (error instanceof fastify.errorCodes.FST_ERR_BAD_STATUS_CODE) {
     reply.status(500).send({ error: true, message: error.message, statusCode: error.statusCode })
   } else {
-    reply.status(500).send({ error: true, message: 'Internal server error'})
+    reply.status(500).send({ error: true, message: lang.t('error:internalError')})
   }
 })
 
