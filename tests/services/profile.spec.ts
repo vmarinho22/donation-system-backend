@@ -8,6 +8,8 @@ describe('profile service', () => {
   let mockSelect: jest.Mock;
   let mockFrom: jest.Mock;
   let mockReturning: jest.Mock;
+  let mockInnerJoin1: jest.Mock;
+  let mockInnerJoin2: jest.Mock;
   let mockInsert: jest.Mock;
   let mockValues: jest.Mock;
   let mockUpdate: jest.Mock;
@@ -35,6 +37,8 @@ describe('profile service', () => {
   beforeEach(() => {
     mockSelect = jest.fn().mockReturnThis();
     mockFrom = jest.fn().mockReturnThis();
+    mockInnerJoin1 = jest.fn().mockReturnThis();
+    mockInnerJoin2 = jest.fn().mockReturnThis();
 
     mockInsert = jest.fn().mockReturnThis();
     mockValues = jest.fn().mockReturnThis();
@@ -127,6 +131,33 @@ describe('profile service', () => {
       expect(mockUpdate).toBeCalledTimes(1);
       expect(dbClient.select).toBeCalled();
       expect(dbClient.update).toBeCalled();
+    });
+  });
+
+  describe('getFullProfile', () => {
+    it('should return a full profile', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+  
+      mockFrom.mockImplementation(() => ({
+        innerJoin: mockInnerJoin1,
+      }));
+
+      mockInnerJoin1.mockImplementation(() => ({
+        innerJoin: mockInnerJoin2,
+      }));
+      
+      mockInnerJoin2.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedProfile]),
+      }));
+  
+      const profile = await profileService.getFullProfile(mockedReturnedProfile.id);
+      
+      expect(profile).toBeDefined();
+      expect(profile).toEqual(mockedReturnedProfile);
+      expect(mockSelect).toBeCalledTimes(1);
+      expect(dbClient.select).toBeCalled();
     });
   });
 });

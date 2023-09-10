@@ -94,9 +94,26 @@ async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Parti
   }
 }
 
+async function getFull(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
+  const { id } = _req.params;
+
+  try {
+    const profile = await profileService.getFullProfile(id);
+
+    if (!profile) {
+      throw new ApiError(404, _req.t('profile:notFound'));
+    }
+
+    _reply.send(profile);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 export default {
   create,
   getUnique,
   getAll,
-  update
+  update,
+  getFull
 };

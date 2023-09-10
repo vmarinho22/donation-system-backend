@@ -9,6 +9,7 @@ const userRouter = async (fastify: FastifyInstance) => {
   fastify.get('/', profileController.getAll);
   fastify.get('/:id', profileController.getUnique);
   fastify.put('/:id', profileController.update);
+  fastify.get('/full/:id', profileController.getFull);
 };
 
 export default userRouter;
