@@ -30,14 +30,16 @@ const createProfileDtoSchema = z.object({
 
 type CreateProfileDto = z.infer<typeof createProfileDtoSchema>;
 
-async function create(profile: CreateProfileDto): Promise<Profile | null> {
+async function create(profile: CreateProfileDto): Promise<string | null> {
   const parsedProfile = createProfileDtoSchema.parse(profile);
 
-  const returnedProfile = await dbClient.insert(profiles).values(parsedProfile);
+  const returnedProfile = await dbClient.insert(profiles).values(parsedProfile).returning({
+    id: profiles.id,
+  });
 
   if (returnedProfile.length === 0) return null;
 
-  return returnedProfile[0];
+  return returnedProfile[0].id;
 }
 
 async function getUnique(id: string): Promise<Profile | null> {

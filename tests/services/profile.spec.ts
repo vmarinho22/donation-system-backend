@@ -7,6 +7,7 @@ jest.mock('../../src/clients/db');
 describe('profile service', () => {
   let mockSelect: jest.Mock;
   let mockFrom: jest.Mock;
+  let mockReturning: jest.Mock;
   let mockInsert: jest.Mock;
   let mockValues: jest.Mock;
   let mockUpdate: jest.Mock;
@@ -37,6 +38,7 @@ describe('profile service', () => {
 
     mockInsert = jest.fn().mockReturnThis();
     mockValues = jest.fn().mockReturnThis();
+    mockReturning = jest.fn().mockReturnThis();
     
     mockUpdate = jest.fn().mockReturnThis();
     mockSet = jest.fn().mockReturnThis();
@@ -51,12 +53,15 @@ describe('profile service', () => {
       mockInsert.mockImplementation(() => ({
         values: mockValues,
       }));
-      mockValues.mockImplementation(() => [mockedReturnedProfile]);
+      mockValues.mockImplementation(() => ({
+        returning: mockReturning,
+      }));
+      mockReturning.mockImplementation(() => [{id: mockedReturnedProfile.id}]);
 
       const profile = await profileService.create(mockedSentProfile);
 
       expect(profile).toBeDefined();
-      expect(profile).toEqual(mockedReturnedProfile);
+      expect(profile).toEqual(mockedReturnedProfile.id);
       expect(mockInsert).toBeCalledTimes(1);
       expect(dbClient.insert).toBeCalled();
     });
