@@ -1,6 +1,8 @@
 name: Node Test CI
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
 
 env:
   CI: true
