@@ -50,6 +50,23 @@ async function create(
   }
 }
 
+async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
+  const { id } = _req.params;
+
+  try {
+    const profile = await profileService.getUnique(id);
+
+    if (!profile) {
+      throw new ApiError(404, _req.t('profile:notFound'));
+    }
+
+    _reply.send(profile);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 export default {
   create,
+  getUnique
 };
