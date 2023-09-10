@@ -51,7 +51,10 @@ server.setErrorHandler(function (error, request, reply) {
 })
 
 
-server.listen({ port: env.PORT }, (err, address) => {
+server.listen({ 
+    host: env.HOST, 
+    port: env.PORT 
+}, (err, address) => {
   if (err) {
     console.error(err)
     process.exit(1)
