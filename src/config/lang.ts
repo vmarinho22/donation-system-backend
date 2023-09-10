@@ -7,7 +7,6 @@ i18next.use(i18nHttpMiddleware.LanguageDetector).init({
   lng: 'pt-BR',
   preload: ['pt-BR'],
   fallbackLng: 'pt-BR',
-  debug: true,
   resources: {
     "pt-BR": ptLocale
   }

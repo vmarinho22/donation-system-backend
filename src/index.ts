@@ -10,6 +10,7 @@ import registerRouter from './routes/register';
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
 import recoveryPasswordRouter from './routes/recoveryPassword';
+import profileRouter from './routes/profile';
 
 import lang from './config/lang';
 
@@ -35,6 +36,7 @@ server.register(registerRouter, { prefix: '/signup' });
 server.register(userRouter, { prefix: '/users' });
 server.register(authRouter, { prefix: '/auth' });
 server.register(recoveryPasswordRouter, { prefix: '/recovery-password' });
+server.register(profileRouter, { prefix: '/profiles' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
@@ -51,7 +53,10 @@ server.setErrorHandler(function (error, request, reply) {
 })
 
 
-server.listen({ port: env.PORT }, (err, address) => {
+server.listen({ 
+    host: env.HOST, 
+    port: env.PORT 
+}, (err, address) => {
   if (err) {
     console.error(err)
     process.exit(1)

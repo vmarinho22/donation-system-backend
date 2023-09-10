@@ -1,4 +1,5 @@
 export default {
+  HOST: process.env.HOST || '0.0.0.0',
   PORT: Number(process.env.PORT) || 8001,
   URL: process.env.URL || 'http://localhost:8001',
   ENV: process.env.NODE_ENV || 'development',

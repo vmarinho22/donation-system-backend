@@ -15,5 +15,8 @@
     "codeMessage": "Seu codigo de verificacao e: {{ code }}",
     "invalidCode": "O código enviado está expirado!",
     "expiredCode": "O código enviado está expirado!"
+  },
+  "profile": {
+    "notFound": "Perfil não encontrado"
   }
 }

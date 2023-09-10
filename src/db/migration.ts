@@ -5,7 +5,7 @@ import postgres from 'postgres';
 import env from '../config/env'
 
 // for migrations
-const migrationClient = postgres(env.DB_CONNECTION_STRING, { max: 1 });
+const migrationClient = postgres(env.DB_CONNECTION_STRING, { max: 1, ssl: "prefer" });
 
 async function migration() {
   await migrate(drizzle(migrationClient), {migrationsFolder: 'drizzle'});
