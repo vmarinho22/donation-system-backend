@@ -66,7 +66,37 @@ async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply
   }
 }
 
+async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
+
+  try {
+    const profiles = await profileService.getAll();
+
+    _reply.send(profiles);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
+async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<createUserParams> }>, _reply: FastifyReply) {
+  const { id } = _req.params;
+  const body = _req.body ?? {};
+
+  try {
+    const updatedProfile = await profileService.update(id, body);
+
+    if (!updatedProfile) {
+      throw new ApiError(404, _req.t('profile:notFound'));
+    }
+
+    _reply.send({success: updatedProfile});
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 export default {
   create,
-  getUnique
+  getUnique,
+  getAll,
+  update
 };
