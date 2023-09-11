@@ -21,5 +21,8 @@
   },
   "medicalRecord": {
     "notFound": "Prontuário não encontrado"
+  },
+  "patient": {
+    "notFound": "Ficha de paciente não encontrado"
   }
 }

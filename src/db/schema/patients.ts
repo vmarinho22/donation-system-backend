@@ -1,4 +1,4 @@
-import { uuid, pgEnum, pgTable, varchar, timestamp, integer } from 'drizzle-orm/pg-core';
+import { uuid, pgEnum, pgTable, varchar, timestamp, integer, doublePrecision } from 'drizzle-orm/pg-core';
 import { users } from './users';
 import { medicalRecords } from './medicalRecords';
 import { bloods } from './bloods';
@@ -11,7 +11,7 @@ export const patients = pgTable('patients', {
   sex: sexEnum('sex').notNull(),
   gender: varchar('gender', { length: 255 }),
   age: integer('age').notNull(),
-  weight: integer('weight').notNull(),
+  weight: doublePrecision('weight').notNull(),
   height: integer('height').notNull(),
   rg: varchar('rg', { length: 10 }).notNull(),
   userId: uuid('user_id').references(() => users.id).notNull(),
