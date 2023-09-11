@@ -6,6 +6,8 @@ const medicalRecordsRouter = async (fastify: FastifyInstance) => {
   fastify.addHook('onRequest', auth);
 
   fastify.post('/', medicalRecordsController.create);
+  fastify.get('/', medicalRecordsController.getAll);
+  fastify.get('/:id', medicalRecordsController.getUnique);
 };
 
 export default medicalRecordsRouter;

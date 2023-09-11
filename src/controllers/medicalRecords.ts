@@ -22,6 +22,35 @@ async function create(
   }
 }
 
+async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
+  const { id } = _req.params;
+
+  try {
+    const medicalRecord = await medicalRecordsService.getUnique(id);
+
+    if (!medicalRecord) {
+      throw new ApiError(404, _req.t('medicalRecord:notFound'));
+    }
+
+    _reply.send(medicalRecord);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
+async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
+
+  try {
+    const medicalRecords = await medicalRecordsService.getAll();
+
+    _reply.send(medicalRecords);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 export default {
-  create
+  create,
+  getUnique,
+  getAll,
 }

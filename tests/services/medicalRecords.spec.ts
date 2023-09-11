@@ -7,6 +7,8 @@ describe('medicalRecords service', () => {
   let mockInsert: jest.Mock;
   let mockValues: jest.Mock;
   let mockReturning: jest.Mock;
+  let mockSelect: jest.Mock;
+  let mockFrom: jest.Mock;
 
   const id = "184e3edc-f1d3-4844-8766-310701a3eae7"
 
@@ -42,8 +44,12 @@ describe('medicalRecords service', () => {
     mockInsert = jest.fn().mockReturnThis();
     mockValues = jest.fn().mockReturnThis();
     mockReturning = jest.fn().mockReturnThis();
+    
+    mockSelect = jest.fn().mockReturnThis();
+    mockFrom = jest.fn().mockReturnThis();
 
     dbClient.insert = mockInsert;
+    dbClient.select = mockSelect;
   });
 
   describe('create', () => {
@@ -60,17 +66,35 @@ describe('medicalRecords service', () => {
 
       expect(createdMedicalRecord).toEqual(id);
     });
+  });
 
-    it('should throw an error when the medical record is not created', async () => {
-      mockInsert.mockImplementation(() => ({
-        values: mockValues,
+  describe('getUnique', () => {
+    it('should return a medical record', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
       }));
-      mockValues.mockImplementation(() => ({
-        returning: mockReturning,
-      }));
-      mockReturning.mockImplementation(() => []);
 
-      await expect(medicalRecordsService.create(mockedSendedMedicalRecord)).rejects.toThrowError();
+      mockFrom.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedMedicalRecord])
+      }));
+
+      const returnedMedicalRecord = await medicalRecordsService.getUnique(id);
+
+      expect(returnedMedicalRecord).toEqual(mockedReturnedMedicalRecord);
+      expect(mockSelect).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('getAll', () => {
+    it('should return all medical records', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: jest.fn().mockResolvedValue([mockedReturnedMedicalRecord]),
+      }));
+
+      const returnedMedicalRecord = await medicalRecordsService.getAll();
+
+      expect(returnedMedicalRecord).toEqual([mockedReturnedMedicalRecord]);
+      expect(mockSelect).toHaveBeenCalledTimes(1);
     });
   });
 });
