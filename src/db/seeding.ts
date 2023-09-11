@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import dbClient from '../clients/db';
-import { bloodType, factorRh } from '../types/blood.d';
+import { bloodType, factorRh } from '../types/blood';
 import { bloods } from './schema/bloods';
 
 async function seeding() {
