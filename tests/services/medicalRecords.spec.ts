@@ -9,6 +9,8 @@ describe('medicalRecords service', () => {
   let mockReturning: jest.Mock;
   let mockSelect: jest.Mock;
   let mockFrom: jest.Mock;
+  let mockUpdate: jest.Mock;
+  let mockSet: jest.Mock;
 
   const id = "184e3edc-f1d3-4844-8766-310701a3eae7"
 
@@ -47,9 +49,13 @@ describe('medicalRecords service', () => {
     
     mockSelect = jest.fn().mockReturnThis();
     mockFrom = jest.fn().mockReturnThis();
+    
+    mockUpdate = jest.fn().mockReturnThis();
+    mockSet = jest.fn().mockReturnThis();
 
     dbClient.insert = mockInsert;
     dbClient.select = mockSelect;
+    dbClient.update = mockUpdate;
   });
 
   describe('create', () => {
@@ -95,6 +101,32 @@ describe('medicalRecords service', () => {
 
       expect(returnedMedicalRecord).toEqual([mockedReturnedMedicalRecord]);
       expect(mockSelect).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('update', () => {
+    it('should update a medical record', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+  
+      mockFrom.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedMedicalRecord]),
+      }));
+
+      mockUpdate.mockImplementation(() => ({
+        set: mockSet,
+      }));
+  
+      mockSet.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([{id}]),
+      }));
+
+      const updatedMedicalRecord = await medicalRecordsService.update(id, mockedSendedMedicalRecord);
+
+      expect(updatedMedicalRecord).toBeTruthy();
+      expect(mockSelect).toHaveBeenCalledTimes(1);
+      expect(mockUpdate).toHaveBeenCalledTimes(1);
     });
   });
 });
