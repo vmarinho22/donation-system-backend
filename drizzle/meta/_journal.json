@@ -22,6 +22,20 @@
       "when": 1693919339416,
       "tag": "0002_dazzling_dust",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1694402487929,
+      "tag": "0003_cute_pride",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1694403337211,
+      "tag": "0004_smooth_warbird",
+      "breakpoints": true
     }
   ]
 }

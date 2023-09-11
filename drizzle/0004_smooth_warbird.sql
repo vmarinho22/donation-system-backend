@@ -1,0 +1,1 @@
+ALTER TABLE "patients" ALTER COLUMN "weight" SET DATA TYPE double precision;
