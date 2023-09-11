@@ -4,7 +4,7 @@ import profileService from '../services/profile';
 import errorDistributor from '../utils/errorDistributor';
 import hasNoMandatoryAttribute from '../validators/hasNoMandatoryAttribute';
 
-type createUserParams = {
+type CreateProfileDto = {
   firstName: string
   lastName: string
   socialName: string | null
@@ -15,7 +15,7 @@ type createUserParams = {
 };
 
 async function create(
-  _req: FastifyRequest<{ Body: createUserParams }>,
+  _req: FastifyRequest<{ Body: CreateProfileDto }>,
   _reply: FastifyReply,
 ) {
   const body = _req.body ?? {};
@@ -77,7 +77,7 @@ async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
   }
 }
 
-async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<createUserParams> }>, _reply: FastifyReply) {
+async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<CreateProfileDto> }>, _reply: FastifyReply) {
   const { id } = _req.params;
   const body = _req.body ?? {};
 

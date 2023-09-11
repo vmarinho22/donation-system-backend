@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import profileController from '../controllers/profile';
 import auth from '../hooks/auth';
 
-const userRouter = async (fastify: FastifyInstance) => {
+const profileRouter = async (fastify: FastifyInstance) => {
   fastify.addHook('onRequest', auth);
 
   fastify.post('/', profileController.create);
@@ -12,4 +12,4 @@ const userRouter = async (fastify: FastifyInstance) => {
   fastify.get('/full/:id', profileController.getFull);
 };
 
-export default userRouter;
+export default profileRouter;

@@ -7,9 +7,9 @@ import { z } from "zod";
 
 import { createInsertSchema } from 'drizzle-zod';
 import dbClient from '../clients/db';
-import { registerDTO } from "../controllers/register";
+import { RegisterDTO } from "../controllers/register";
 
-async function register(data: registerDTO) {
+async function register(data: RegisterDTO) {
 
   const userInsertSchema = z.object({
     email: z.string().email(),

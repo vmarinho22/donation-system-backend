@@ -17,7 +17,7 @@ import patientsRouter from './routes/patients';
 import lang from './config/lang';
 
 export const server = fastify({
-  logger: false
+  logger: env.ENV !== 'development'
 });
 
 server.register(jwt, {
@@ -44,8 +44,6 @@ server.register(patientsRouter, { prefix: '/patients' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
-
-  console.error(error);
   
   if (error instanceof ApiError) {
     reply.status(error.statusCode).send({ error: true, message: error.message });
