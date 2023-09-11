@@ -49,8 +49,26 @@ async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
   }
 }
 
+async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<CreateMedicalRecordDto> }>, _reply: FastifyReply) {
+  const { id } = _req.params;
+  const body = _req.body ?? {};
+
+  try {
+    const updatedProfile = await medicalRecordsService.update(id, body);
+
+    if (!updatedProfile) {
+      throw new ApiError(404, _req.t('medicalRecord:notFound'));
+    }
+
+    _reply.send({success: updatedProfile});
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 export default {
   create,
   getUnique,
   getAll,
+  update
 }

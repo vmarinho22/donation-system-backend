@@ -8,6 +8,7 @@ const medicalRecordsRouter = async (fastify: FastifyInstance) => {
   fastify.post('/', medicalRecordsController.create);
   fastify.get('/', medicalRecordsController.getAll);
   fastify.get('/:id', medicalRecordsController.getUnique);
+  fastify.put('/:id', medicalRecordsController.update);
 };
 
 export default medicalRecordsRouter;
