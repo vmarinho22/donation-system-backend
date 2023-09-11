@@ -8,13 +8,13 @@ import ApiError from "../utils/errors/apiError";
 import errorDistributor from '../utils/errorDistributor';
 
 
-export type registerDTO = {
+export type RegisterDTO = {
   user: Omit<InferModel<typeof users, "insert">, 'profileId'>;
   profile: InferModel<typeof profiles, "insert">;
   address: InferModel<typeof address, "insert">;
 }
 
-async function register(_req: FastifyRequest<{ Body: registerDTO }>, _reply: FastifyReply) {
+async function register(_req: FastifyRequest<{ Body: RegisterDTO }>, _reply: FastifyReply) {
   const body = _req.body ?? {};
 
   const dataValidation = ['user', 'profile', 'address'];

@@ -3,18 +3,18 @@ import ApiError from "../utils/errors/apiError";
 import errorDistributor from "../utils/errorDistributor";
 import recoveryPasswordService from "../services/passwordRecovery";
 
-type recoveryCodeDto = {
+type RecoveryCodeDto = {
   phone: string;
 }
 
-type validateRecoveryCodeDto = {
+type ValidateRecoveryCodeDto = {
   email: string;
   code: number;
 };
 
-type changePasswordDto = validateRecoveryCodeDto & { password: string }
+type ChangePasswordDto = ValidateRecoveryCodeDto & { password: string }
 
-async function sendRecoveryCode(_req: FastifyRequest<{ Body: recoveryCodeDto }>, _reply: FastifyReply) {
+async function sendRecoveryCode(_req: FastifyRequest<{ Body: RecoveryCodeDto }>, _reply: FastifyReply) {
   const body = _req.body ?? {};
 
   const dataValidation = ['phone'];
@@ -35,7 +35,7 @@ async function sendRecoveryCode(_req: FastifyRequest<{ Body: recoveryCodeDto }>,
   }
 }
 
-async function validateRecoveryCode(_req: FastifyRequest<{ Body: validateRecoveryCodeDto }>, _reply: FastifyReply) {
+async function validateRecoveryCode(_req: FastifyRequest<{ Body: ValidateRecoveryCodeDto }>, _reply: FastifyReply) {
   const body = _req.body ?? {};
 
   const dataValidation = ['email', 'code'];
@@ -55,7 +55,7 @@ async function validateRecoveryCode(_req: FastifyRequest<{ Body: validateRecover
     errorDistributor(error);
   }
 }
-async function changePassword(_req: FastifyRequest<{ Body: changePasswordDto }>, _reply: FastifyReply) {
+async function changePassword(_req: FastifyRequest<{ Body: ChangePasswordDto }>, _reply: FastifyReply) {
   const body = _req.body ?? {};
 
   const dataValidation = ['email', 'password', 'code'];
