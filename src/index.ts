@@ -6,6 +6,7 @@ import ApiError from './utils/errors/apiError';
 import jwt from '@fastify/jwt';
 import cors from '@fastify/cors'
 
+import statusRouter from './routes/status';
 import registerRouter from './routes/register';
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
@@ -34,6 +35,7 @@ server.register(i18nHttpMiddleware.plugin, {
   i18next: lang,
 })
 
+server.register(statusRouter, { prefix: '/status' });
 server.register(registerRouter, { prefix: '/signup' });
 server.register(userRouter, { prefix: '/users' });
 server.register(authRouter, { prefix: '/auth' });
