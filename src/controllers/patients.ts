@@ -10,13 +10,13 @@ async function create(
   const body = _req.body ?? {};
 
   try {
-    const createdMedicalRecord = await patientsService.create(body);
+    const createdPatient = await patientsService.create(body);
 
-    if (!createdMedicalRecord) {
+    if (!createdPatient) {
       throw new ApiError(500, _req.t('error:internalError'));
     }
 
-    _reply.send({ patient: createdMedicalRecord });
+    _reply.send({ patient: createdPatient });
   } catch (error) {
     errorDistributor(error);
   }
