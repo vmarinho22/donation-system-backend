@@ -18,5 +18,8 @@
   },
   "profile": {
     "notFound": "Perfil não encontrado"
+  },
+  "medicalRecord": {
+    "notFound": "Prontuário não encontrado"
   }
 }
