@@ -18,7 +18,7 @@ import patientsRouter from './routes/patients';
 import lang from './config/lang';
 
 export const server = fastify({
-  logger: env.ENV !== 'development'
+  logger: true
 });
 
 server.register(jwt, {
