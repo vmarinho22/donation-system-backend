@@ -14,7 +14,8 @@
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "test": "jest --detectOpenHandles --passWithNoTests",
     "test:coverage": "jest --coverage --detectOpenHandles --passWithNoTests",
-    "studio": "drizzle-kit studio"
+    "studio": "drizzle-kit studio",
+    "execute:db:all": "npm run migrate & npm run seed"
   },
   "keywords": [],
   "author": "",
