@@ -28,8 +28,8 @@ async function register(_req: FastifyRequest<{ Body: RegisterDTO }>, _reply: Fas
   const { user, profile, address } = body;
 
   try {
-    const token = await registerService.register({ user, profile, address});
-    _reply.send({ token });
+    const data = await registerService.register({ user, profile, address});
+    _reply.send(data);
   } catch (error) {
     errorDistributor(error);
   }
