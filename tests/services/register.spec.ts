@@ -46,13 +46,14 @@ describe('register service', () => {
   })
 
   it('should return a token', async () => {
-    const token = await registerService.register({
+    const data = await registerService.register({
       user: mockedUser,
       profile: mockedProfile,
       address: mockedAddress
     });
 
-    expect(typeof token).toBe('string');
+    expect(typeof data.token).toBe('string');
+    expect(data).toHaveProperty('userId');
   });
 
   it('should throw an error if the data is fails', async () => {

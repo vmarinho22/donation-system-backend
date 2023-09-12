@@ -52,7 +52,7 @@ async function register(data: RegisterDTO) {
 
   const token = server.jwt.sign({ userId, role  }, { expiresIn: '1d' })
 
-  return token as string;
+  return { token, userId: userId as unknown as string};
 }
 
 export default {
