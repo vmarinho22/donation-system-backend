@@ -110,6 +110,7 @@ async function getFullProfile(id: string): Promise<FullProfile | null> {
     lastName: profiles.lastName,
     email: users.email,
     cpf: users.cpf,
+    role: users.role,
     socialName: profiles.socialName,
     lang: profiles.lang,
     photoUrl: profiles.photoUrl,
