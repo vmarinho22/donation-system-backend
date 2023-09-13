@@ -1,7 +1,7 @@
 import { z } from "zod";
 import dbClient from '../clients/db';
 import { profiles } from "../db/schema/profiles";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { users } from "../db/schema/users";
 import { address } from "../db/schema/address";
 
@@ -131,7 +131,7 @@ async function getFullProfile(id: string): Promise<FullProfile | null> {
   }).from(profiles)
   .innerJoin(users, eq(users.profileId, profiles.id))
   .innerJoin(address, eq(address.id, profiles.addressId))
-  .where(eq(profiles.id, parsedId));
+  .where(or(eq(profiles.id, parsedId), eq(users.id, parsedId)));
 
   if (returnedProfile.length === 0) return null;
 
