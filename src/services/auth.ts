@@ -5,9 +5,12 @@ import { users } from '../db/schema/users';
 import dbClient from '../clients/db';
 import { eq } from 'drizzle-orm';
 
+type AuthReturn = {
+  token: string;
+  userId: string;
+}
 
-
-async function authenticate(email: string, password: string): Promise<string | null> {
+async function authenticate(email: string, password: string): Promise<AuthReturn | null> {
   const parsedData = z.object({
     email: z.string().email(),
     password: z.string(),
@@ -30,7 +33,7 @@ async function authenticate(email: string, password: string): Promise<string | n
 
   const token = server.jwt.sign({ userId: user.id, role: user.role }, { expiresIn: '1d' });
 
-  return token;
+  return { token, userId: user.id };
 
 }
 

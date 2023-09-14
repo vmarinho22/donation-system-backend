@@ -22,13 +22,13 @@ async function authenticate(_req: FastifyRequest<{ Body: authenticateDTO }>, _re
   const { email, password } = body;
 
   try {
-    const token = await authService.authenticate(email, password);
+    const returnedAuthData = await authService.authenticate(email, password);
 
-    if (!token) {
+    if (!returnedAuthData) {
       throw new ApiError(401, _req.t('error:credentialInvalid'));
     }
 
-    _reply.send({ token });
+    _reply.send(returnedAuthData);
   } catch (error) {
     errorDistributor(error);
   }
