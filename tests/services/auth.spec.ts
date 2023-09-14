@@ -45,9 +45,9 @@ describe('auth service', () => {
         where: jest.fn().mockResolvedValue([mockedReturnedUser]),
       }));
   
-      const token = await authService.authenticate(mockedUserSignIn.email, mockedUserSignIn.password);
+      const returnedAuth = await authService.authenticate(mockedUserSignIn.email, mockedUserSignIn.password);
 
-      expect(token).toBeDefined();
+      expect(returnedAuth).toBeDefined();
     });
   });
 
