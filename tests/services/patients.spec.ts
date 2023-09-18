@@ -97,6 +97,23 @@ describe('patients service', () => {
     });
   });
 
+  describe('getUniqueByUserId', () => {
+    it('should return a patient record', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+
+      mockFrom.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedPatient])
+      }));
+
+      const returnedPatientRecord = await patientsService.getUniqueByUserId(id);
+
+      expect(returnedPatientRecord).toEqual(mockedReturnedPatient);
+      expect(mockSelect).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('update', () => {
     it('should update a medical record', async () => {
       mockSelect.mockImplementation(() => ({

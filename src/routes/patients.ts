@@ -8,6 +8,7 @@ const patientRouter = async (fastify: FastifyInstance) => {
   fastify.post('/', patientController.create);
   fastify.get('/', patientController.getAll);
   fastify.get('/:id', patientController.getUnique);
+  fastify.get('/by-user/:id', patientController.getUniqueByUserId);
   fastify.put('/:id', patientController.update);
 };
 

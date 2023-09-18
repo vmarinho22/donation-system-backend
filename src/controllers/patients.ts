@@ -49,6 +49,22 @@ async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
   }
 }
 
+async function getUniqueByUserId(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
+  const { id } = _req.params;
+
+  try {
+    const patient = await patientsService.getUniqueByUserId(id);
+
+    if (!patient) {
+      throw new ApiError(404, _req.t('patient:notFound'));
+    }
+
+    _reply.send(patient);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<CreatePatientDto> }>, _reply: FastifyReply) {
   const { id } = _req.params;
   const body = _req.body ?? {};
@@ -70,5 +86,6 @@ export default {
   create,
   getUnique,
   getAll,
+  getUniqueByUserId,
   update
 }

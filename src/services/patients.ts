@@ -44,6 +44,18 @@ async function getAll(): Promise<Patient[]> {
   return returnedPatients;
 }
 
+async function getUniqueByUserId(userId: string): Promise<Patient | null> {
+  const idSchema = z.string().uuid();
+
+  const parsedId = idSchema.parse(userId);
+
+  const returnedPatient = await dbClient.select().from(patients).where(eq(patients.userId, parsedId));
+
+  if (returnedPatient.length === 0) return null;
+
+  return returnedPatient[0];
+}
+
 async function update(id: string, profile: Partial<Patient>): Promise<boolean | null> {
   const returnedPatient = await getUnique(id);
 
@@ -60,5 +72,6 @@ export default {
   create,
   getUnique,
   getAll,
+  getUniqueByUserId,
   update
 }
