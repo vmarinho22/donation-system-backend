@@ -14,6 +14,7 @@ import recoveryPasswordRouter from './routes/recoveryPassword';
 import profileRouter from './routes/profile';
 import medicalRecordsRouter from './routes/medicalRecords';
 import patientsRouter from './routes/patients';
+import bloodRouter from './routes/bloods';
 
 import lang from './config/lang';
 
@@ -43,6 +44,7 @@ server.register(recoveryPasswordRouter, { prefix: '/recovery-password' });
 server.register(profileRouter, { prefix: '/profiles' });
 server.register(medicalRecordsRouter, { prefix: '/medical-records' });
 server.register(patientsRouter, { prefix: '/patients' });
+server.register(bloodRouter, { prefix: '/bloods' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
