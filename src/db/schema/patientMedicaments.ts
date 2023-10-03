@@ -3,9 +3,9 @@ import { patients } from './patients';
 
 export const medicamentStripe = pgEnum('medicament_stripe', ['no_stripe', 'yellow', 'red', 'black']);
 
-export const patientMedicaments = pgTable('users', {
+export const patientMedicaments = pgTable('patient_medicaments', {
   id: uuid('id').defaultRandom().primaryKey(),
-  name: varchar('name', { length: 255 }).unique().notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
   stripe: medicamentStripe('stripe').default('no_stripe'),
   frequency: varchar('frequency', { length: 255 }).notNull(),
   dosage: integer('dosage').notNull(),
