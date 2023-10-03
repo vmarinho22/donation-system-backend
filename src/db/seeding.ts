@@ -8,6 +8,7 @@ async function seeding() {
   const returnedBlood = await dbClient.select({ id: bloods.id }).from(bloods);
 
   if (returnedBlood.length === 0) {
+    console.log('Seeding...');
     await dbClient.insert(bloods).values([
       {
         factor_rh: factorRh.POSITIVE,
