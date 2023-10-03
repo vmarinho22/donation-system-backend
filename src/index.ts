@@ -15,6 +15,7 @@ import profileRouter from './routes/profile';
 import medicalRecordsRouter from './routes/medicalRecords';
 import patientsRouter from './routes/patients';
 import bloodRouter from './routes/bloods';
+import patientMedicamentRouter from './routes/patientMedicaments';
 
 import lang from './config/lang';
 
@@ -45,6 +46,7 @@ server.register(profileRouter, { prefix: '/profiles' });
 server.register(medicalRecordsRouter, { prefix: '/medical-records' });
 server.register(patientsRouter, { prefix: '/patients' });
 server.register(bloodRouter, { prefix: '/bloods' });
+server.register(patientMedicamentRouter, { prefix: '/patient-medicaments' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);

@@ -36,6 +36,13 @@
       "when": 1694403337211,
       "tag": "0004_smooth_warbird",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1696367461870,
+      "tag": "0005_rare_rattler",
+      "breakpoints": true
     }
   ]
 }

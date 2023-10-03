@@ -27,5 +27,8 @@
   },
   "blood": {
     "notFound": "Ficha de sangue não encontrado"
+  },
+  "patientMedicament": {
+    "notFound": "Medicamento de paciente não encontrado"
   }
 }
