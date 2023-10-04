@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import dbClient from '../clients/db';
-import { bloodType, factorRh } from '../types/blood';
+import { bloodType } from '../types/blood';
 import { bloods } from './schema/bloods';
+
 
 async function seeding() {
 
@@ -9,91 +10,18 @@ async function seeding() {
 
   if (returnedBlood.length === 0) {
     console.log('Seeding...');
-    await dbClient.insert(bloods).values([
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.A_POSITIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.A_POSITIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.A_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.A_NEGATIVE
-      },
-      
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.B_POSITIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.B_POSITIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.B_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.B_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.AB_POSITIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.AB_POSITIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.AB_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.AB_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.AB_POSITIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.AB_POSITIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.AB_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.AB_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.O_POSITIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.O_POSITIVE
-      },
-      {
-        factor_rh: factorRh.POSITIVE,
-        type: bloodType.O_NEGATIVE
-      },
-      {
-        factor_rh: factorRh.NEGATIVE,
-        type: bloodType.O_NEGATIVE
-      }
-    ]);
+    const bloodsArray = [
+      bloodType.A_POSITIVE, 
+      bloodType.A_NEGATIVE, 
+      bloodType.B_POSITIVE, 
+      bloodType.B_NEGATIVE,
+      bloodType.AB_POSITIVE,
+      bloodType.AB_NEGATIVE,
+      bloodType.O_POSITIVE,
+      bloodType.O_NEGATIVE
+    ];
+    await dbClient.insert(bloods).values(bloodsArray.map((type) => ({ type })));
   }
-
 
   console.log('Seeding done!')
   process.exit();
