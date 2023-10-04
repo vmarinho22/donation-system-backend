@@ -12,7 +12,6 @@ describe('Blood service', () => {
 
   const mockedReturnedBloods  = {
     id,
-    factor_rh: '+',
     type: 'A+',
     createdAt: new Date(),
     updatedAt: new Date(),
