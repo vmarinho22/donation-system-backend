@@ -9,9 +9,9 @@ const patientAllergiesSchema = createSelectSchema(patientAllergies);
 
 export type PatientAllergy = z.infer<typeof patientAllergiesSchema>;
 
-export type CreatePatientMedicamentDto = Omit<PatientAllergy, "id" | "createdAt" | "updatedAt">;
+export type CreatePatientAllergyDto = Omit<PatientAllergy, "id" | "createdAt" | "updatedAt">;
 
-async function create(createPatientDto: CreatePatientMedicamentDto): Promise<string | null> {
+async function create(createPatientDto: CreatePatientAllergyDto): Promise<string | null> {
 
   const parsedPatientAllergy = createInsertSchema(patientAllergies).parse(createPatientDto);
 

@@ -1,4 +1,4 @@
-import patientAllergiesService, { CreatePatientMedicamentDto, PatientAllergy } from '../../src/services/patientAllergies';
+import patientAllergiesService, { CreatePatientAllergyDto, PatientAllergy } from '../../src/services/patientAllergies';
 import dbClient from '../../src/clients/db';
 
 jest.mock('../../src/clients/db');
@@ -19,7 +19,7 @@ describe('patientMedicaments service', () => {
     causative: 'test',
     intensity: 'low',
     patientId: id,
-  } satisfies CreatePatientMedicamentDto;
+  } satisfies CreatePatientAllergyDto;
 
   const mockedReturnedPatientAllergy = {
     id,
