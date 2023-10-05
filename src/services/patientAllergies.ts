@@ -11,9 +11,9 @@ export type PatientAllergy = z.infer<typeof patientAllergiesSchema>;
 
 export type CreatePatientAllergyDto = Omit<PatientAllergy, "id" | "createdAt" | "updatedAt">;
 
-async function create(createPatientDto: CreatePatientAllergyDto): Promise<string | null> {
+async function create(createPatientAllergyDto: CreatePatientAllergyDto): Promise<string | null> {
 
-  const parsedPatientAllergy = createInsertSchema(patientAllergies).parse(createPatientDto);
+  const parsedPatientAllergy = createInsertSchema(patientAllergies).parse(createPatientAllergyDto);
 
   const createdPatientAllergy = await dbClient.insert(patientAllergies).values(parsedPatientAllergy).returning({ id: patientAllergies.id });
 
@@ -52,7 +52,7 @@ async function getUniqueByPatientId(userId: string): Promise<PatientAllergy | nu
   return returnedPatientAllergy[0];
 }
 
-async function update(id: string, profile: Partial<PatientAllergy>): Promise<boolean | null> {
+async function update(id: string, updatePatientAllergyDto: Partial<PatientAllergy>): Promise<boolean | null> {
   const idSchema = z.string().uuid();
 
   const parsedId = idSchema.parse(id);
@@ -61,9 +61,9 @@ async function update(id: string, profile: Partial<PatientAllergy>): Promise<boo
 
   if (returnedPatientAllergy === null) return null;
 
-  const parsedPatientAllergy = patientAllergiesSchema.partial().parse(profile);
+  const parsedPatientAllergy = patientAllergiesSchema.partial().parse(updatePatientAllergyDto);
 
-  const updatedPatientAllergy = await dbClient.update(patientAllergies).set(parsedPatientAllergy).where(eq(patientAllergies.id, returnedPatientAllergy.id));
+  const updatedPatientAllergy = await dbClient.update(patientAllergies).set(parsedPatientAllergy).where(eq(patientAllergies.id, returnedPatientAllergy.id)).returning({ id: patientAllergies.id });
 
   if (updatedPatientAllergy.length === 0) return null;
 
@@ -75,7 +75,11 @@ async function remove(id: string): Promise<boolean | null> {
 
   const parsedId = idSchema.parse(id);
 
-  const deletedPatientAllergy = await dbClient.delete(patientAllergies).where(eq(patientAllergies.id, parsedId));
+  const returnedPatientAllergy = await getUnique(parsedId);
+
+  if (returnedPatientAllergy === null) return null;
+
+  const deletedPatientAllergy = await dbClient.delete(patientAllergies).where(eq(patientAllergies.id, returnedPatientAllergy.id)).returning({ id: patientAllergies.id });
 
   if (deletedPatientAllergy.length === 0) return null;
 

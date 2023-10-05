@@ -3,7 +3,7 @@ import dbClient from '../../src/clients/db';
 
 jest.mock('../../src/clients/db');
 
-describe('patientMedicaments service', () => {
+describe('patientAllergy service', () => {
   let mockInsert: jest.Mock;
   let mockValues: jest.Mock;
   let mockReturning: jest.Mock;
@@ -135,7 +135,11 @@ describe('patientMedicaments service', () => {
         set: mockSet,
       }));
       mockSet.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedPatientAllergy]),
+        where: mockReturning,
+      }));
+
+      mockReturning.mockImplementation(() => ({
+        returning: jest.fn().mockResolvedValue([mockedReturnedPatientAllergy])
       }));
 
       const updated = await patientAllergiesService.update(id, mockedSendedPatientAllergy);
@@ -160,8 +164,20 @@ describe('patientMedicaments service', () => {
 
   describe('remove', () => {
     it('should remove and return true', async () => {
-      mockDelete.mockImplementation(() => ({
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+
+      mockFrom.mockImplementation(() => ({
         where: jest.fn().mockResolvedValue([mockedReturnedPatientAllergy])
+      }));
+
+      mockDelete.mockImplementation(() => ({
+        where: mockReturning
+      }));
+
+      mockReturning.mockImplementation(() => ({
+        returning: jest.fn().mockResolvedValue([mockedReturnedPatientAllergy])
       }));
 
       const updated = await patientAllergiesService.remove(id);
@@ -170,6 +186,14 @@ describe('patientMedicaments service', () => {
     });
 
     it('should return null if not deleted', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+
+      mockFrom.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([])
+      }));
+
       mockDelete.mockImplementation(() => ({
         where: jest.fn().mockResolvedValue([])
       }));
