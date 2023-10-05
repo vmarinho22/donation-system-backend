@@ -30,5 +30,8 @@
   },
   "patientMedicament": {
     "notFound": "Medicamento de paciente não encontrado"
+  },
+  "patientAllergy": {
+    "notFound": "Alergia de paciente não encontrado"
   }
 }
