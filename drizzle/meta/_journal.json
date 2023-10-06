@@ -57,6 +57,13 @@
       "when": 1696477894043,
       "tag": "0007_shiny_christian_walker",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1696564250205,
+      "tag": "0008_daily_trish_tilby",
+      "breakpoints": true
     }
   ]
 }
