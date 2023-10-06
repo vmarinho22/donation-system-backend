@@ -64,6 +64,20 @@
       "when": 1696564250205,
       "tag": "0008_daily_trish_tilby",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1696564661829,
+      "tag": "0009_tranquil_marrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1696564737554,
+      "tag": "0010_giant_ultimates",
+      "breakpoints": true
     }
   ]
 }
