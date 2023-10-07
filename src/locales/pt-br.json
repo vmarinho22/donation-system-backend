@@ -33,5 +33,14 @@
   },
   "patientAllergy": {
     "notFound": "Alergia de paciente não encontrado"
+  },
+  "doctor": {
+    "notFound": "Médico(a) não encontrado"
+  },
+  "nurse": {
+    "notFound": "Enfermeiro(a) não encontrado"
+  },
+  "patientTransfusionHistory": {
+    "notFound": "Histórico de transfusão de paciente não encontrado"
   }
 }
