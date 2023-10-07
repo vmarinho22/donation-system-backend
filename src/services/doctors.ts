@@ -51,7 +51,7 @@ async function getUniqueByUserId(userId: string): Promise<Doctor | null> {
   return returnedDoctor[0];
 }
 
-async function update(id: string, profile: Partial<Doctor>): Promise<boolean | null> {
+async function update(id: string, updateDoctorDto: Partial<Doctor>): Promise<boolean | null> {
   const idSchema = z.string().uuid();
 
   const parsedId = idSchema.parse(id);
@@ -60,9 +60,9 @@ async function update(id: string, profile: Partial<Doctor>): Promise<boolean | n
 
   if (returnedDoctor === null) return null;
 
-  const parsedDoctor = createInsertSchema(doctors).parse(profile);
+  const parsedDoctor = createSelectSchema(doctors).partial().parse(updateDoctorDto);
 
-  const updatedDoctor = await dbClient.update(doctors).set(parsedDoctor).where(eq(doctors.id, returnedDoctor.id));
+  const updatedDoctor = await dbClient.update(doctors).set(parsedDoctor).where(eq(doctors.id, returnedDoctor.id)).returning({ id: doctors.id });
 
   if (updatedDoctor.length === 0) return null;
 

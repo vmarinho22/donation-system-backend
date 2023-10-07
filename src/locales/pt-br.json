@@ -33,5 +33,8 @@
   },
   "patientAllergy": {
     "notFound": "Alergia de paciente não encontrado"
+  },
+  "doctor": {
+    "notFound": "Médico(a) não encontrado"
   }
 }

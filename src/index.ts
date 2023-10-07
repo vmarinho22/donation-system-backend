@@ -17,6 +17,7 @@ import patientsRouter from './routes/patients';
 import bloodRouter from './routes/bloods';
 import patientMedicamentRouter from './routes/patientMedicaments';
 import patientAllergiesRouter from './routes/patientAllergies';
+import doctorsRouter from './routes/doctors';
 
 import lang from './config/lang';
 
@@ -49,6 +50,7 @@ server.register(patientsRouter, { prefix: '/patients' });
 server.register(bloodRouter, { prefix: '/bloods' });
 server.register(patientMedicamentRouter, { prefix: '/patient-medicaments' });
 server.register(patientAllergiesRouter, { prefix: '/patient-allergies' });
+server.register(doctorsRouter, { prefix: '/doctors' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
