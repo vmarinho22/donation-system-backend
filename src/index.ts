@@ -4,7 +4,7 @@ import env from './config/env';
 import i18nHttpMiddleware from 'i18next-http-middleware';
 import ApiError from './utils/errors/apiError';
 import jwt from '@fastify/jwt';
-import cors from '@fastify/cors'
+import cors from '@fastify/cors';
 
 import statusRouter from './routes/status';
 import registerRouter from './routes/register';
@@ -19,6 +19,7 @@ import patientMedicamentRouter from './routes/patientMedicaments';
 import patientAllergiesRouter from './routes/patientAllergies';
 import doctorsRouter from './routes/doctors';
 import nursesRouter from './routes/nurses';
+import patientTransfusionHistoryRouter from './routes/patientTransfusionHistory';
 
 import lang from './config/lang';
 
@@ -53,6 +54,7 @@ server.register(patientMedicamentRouter, { prefix: '/patient-medicaments' });
 server.register(patientAllergiesRouter, { prefix: '/patient-allergies' });
 server.register(doctorsRouter, { prefix: '/doctors' });
 server.register(nursesRouter, { prefix: '/nurses' });
+server.register(patientTransfusionHistoryRouter, { prefix: '/patient-transfusion-histories' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
@@ -64,8 +66,7 @@ server.setErrorHandler(function (error, request, reply) {
   } else {
     reply.status(500).send({ error: true, message: lang.t('error:internalError')})
   }
-})
-
+});
 
 server.listen({ 
     host: env.HOST, 

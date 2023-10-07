@@ -12,7 +12,9 @@ export type CreatePatientTransfusionHistoryDto = Omit<PatientTransfusionHistory,
 
 async function create(createPatientTransfusionHistoryDto: CreatePatientTransfusionHistoryDto): Promise<string | null> {
 
-  const parsedPatientTransfusionHistory = createInsertSchema(patientTransfusionHistory).parse(createPatientTransfusionHistoryDto);
+  const parsedPatientTransfusionHistory = createInsertSchema(patientTransfusionHistory, {
+    date: z.string().or(z.date()).transform(arg => new Date(arg))
+  }).parse(createPatientTransfusionHistoryDto);
 
   const createdPatientTransfusionHistory = await dbClient.insert(patientTransfusionHistory).values(parsedPatientTransfusionHistory).returning({ id: patientTransfusionHistory.id });
 
