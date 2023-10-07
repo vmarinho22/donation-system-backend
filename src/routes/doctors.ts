@@ -8,7 +8,7 @@ const doctorsRouter = async (fastify: FastifyInstance) => {
   fastify.post('/', doctorsController.create);
   fastify.get('/', doctorsController.getAll);
   fastify.get('/:id', doctorsController.getUnique);
-  fastify.get('/by-user/:id', doctorsController.getUniqueByPatientId);
+  fastify.get('/by-user/:id', doctorsController.getUniqueByUserId);
   fastify.put('/:id', doctorsController.update);
 };
 

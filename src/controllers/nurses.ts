@@ -1,22 +1,22 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import ApiError from "../utils/errors/apiError";
 import errorDistributor from "../utils/errorDistributor";
-import doctorsService, { CreateDoctorDto } from "../services/doctors";
+import nursesService, { CreateNurseDto } from "../services/nurses";
 
 async function create(
-  _req: FastifyRequest<{ Body: CreateDoctorDto }>,
+  _req: FastifyRequest<{ Body: CreateNurseDto }>,
   _reply: FastifyReply,
 ) {
   const body = _req.body ?? {};
 
   try {
-    const createdDoctor = await doctorsService.create(body);
+    const createdNurse = await nursesService.create(body);
 
-    if (!createdDoctor) {
+    if (!createdNurse) {
       throw new ApiError(500, _req.t('error:internalError'));
     }
 
-    _reply.send({ doctor: createdDoctor });
+    _reply.send({ nurse: createdNurse });
   } catch (error) {
     errorDistributor(error);
   }
@@ -25,9 +25,9 @@ async function create(
 async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
 
   try {
-    const doctors = await doctorsService.getAll();
+    const nurses = await nursesService.getAll();
 
-    _reply.send(doctors);
+    _reply.send(nurses);
   } catch (error) {
     errorDistributor(error);
   }
@@ -37,13 +37,13 @@ async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply
   const { id } = _req.params;
 
   try {
-    const doctor = await doctorsService.getUnique(id);
+    const nurse = await nursesService.getUnique(id);
 
-    if (!doctor) {
-      throw new ApiError(404, _req.t('doctor:notFound'));
+    if (!nurse) {
+      throw new ApiError(404, _req.t('nurse:notFound'));
     }
 
-    _reply.send(doctor);
+    _reply.send(nurse);
   } catch (error) {
     errorDistributor(error);
   }
@@ -53,30 +53,30 @@ async function getUniqueByUserId(_req: FastifyRequest<{ Params: { id: string }}>
   const { id } = _req.params;
 
   try {
-    const doctor = await doctorsService.getUniqueByUserId(id);
+    const nurse = await nursesService.getUniqueByUserId(id);
 
-    if (!doctor) {
-      throw new ApiError(404, _req.t('doctor:notFound'));
+    if (!nurse) {
+      throw new ApiError(404, _req.t('nurse:notFound'));
     }
 
-    _reply.send(doctor);
+    _reply.send(nurse);
   } catch (error) {
     errorDistributor(error);
   }
 }
 
-async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<CreateDoctorDto> }>, _reply: FastifyReply) {
+async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Partial<CreateNurseDto> }>, _reply: FastifyReply) {
   const { id } = _req.params;
   const body = _req.body ?? {};
 
   try {
-    const updateDoctor = await doctorsService.update(id, body);
+    const updateNurse = await nursesService.update(id, body);
 
-    if (!updateDoctor) {
+    if (!updateNurse) {
       throw new ApiError(404, _req.t('doctor:notFound'));
     }
 
-    _reply.send({success: updateDoctor});
+    _reply.send({success: updateNurse});
   } catch (error) {
     errorDistributor(error);
   }
