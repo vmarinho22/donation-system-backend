@@ -20,6 +20,7 @@ import patientAllergiesRouter from './routes/patientAllergies';
 import doctorsRouter from './routes/doctors';
 import nursesRouter from './routes/nurses';
 import patientTransfusionHistoryRouter from './routes/patientTransfusionHistory';
+import patientBloodDataRouter from './routes/patientBloodData';
 
 import lang from './config/lang';
 
@@ -55,6 +56,8 @@ server.register(patientAllergiesRouter, { prefix: '/patient-allergies' });
 server.register(doctorsRouter, { prefix: '/doctors' });
 server.register(nursesRouter, { prefix: '/nurses' });
 server.register(patientTransfusionHistoryRouter, { prefix: '/patient-transfusion-histories' });
+server.register(patientBloodDataRouter, { prefix: '/patient-blood-data' });
+
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);

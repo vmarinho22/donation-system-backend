@@ -73,7 +73,7 @@ async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Parti
     const updateNurse = await nursesService.update(id, body);
 
     if (!updateNurse) {
-      throw new ApiError(404, _req.t('doctor:notFound'));
+      throw new ApiError(404, _req.t('nurse:notFound'));
     }
 
     _reply.send({success: updateNurse});

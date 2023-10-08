@@ -105,7 +105,7 @@ describe('patientBloodData service', () => {
     });
   });
 
-  describe('getUniqueByPatientId', () => {
+  describe('getByPatientId', () => {
     it('should return a nurse', async () => {
       mockSelect.mockImplementation(() => ({
         from: mockFrom,
@@ -114,9 +114,9 @@ describe('patientBloodData service', () => {
         where: jest.fn().mockResolvedValue([mockedReturnedPatientBloodData])
       }));
 
-      const returnedPatientBloodData = await patientBloodDataService.getUniqueByPatientId(id);
+      const returnedPatientBloodData = await patientBloodDataService.getByPatientId(id);
 
-      expect(returnedPatientBloodData).toEqual(mockedReturnedPatientBloodData);
+      expect(returnedPatientBloodData).toEqual([mockedReturnedPatientBloodData]);
     });
   });
 

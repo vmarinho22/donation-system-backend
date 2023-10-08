@@ -39,7 +39,7 @@ async function getAll(): Promise<PatientBloodData[]> {
   return returnedPatientBloodData;
 }
 
-async function getUniqueByPatientId(userId: string): Promise<PatientBloodData | null> {
+async function getByPatientId(userId: string): Promise<PatientBloodData[] | null> {
   const idSchema = z.string().uuid();
 
   const parsedId = idSchema.parse(userId);
@@ -48,7 +48,7 @@ async function getUniqueByPatientId(userId: string): Promise<PatientBloodData | 
 
   if (returnedPatientBloodData.length === 0) return null;
 
-  return returnedPatientBloodData[0];
+  return returnedPatientBloodData;
 }
 
 async function update(id: string, updateNurseDto: Partial<PatientBloodData>): Promise<boolean | null> {
@@ -73,6 +73,6 @@ export default {
   create,
   getUnique,
   getAll,
-  getUniqueByPatientId,
+  getByPatientId,
   update
 }
