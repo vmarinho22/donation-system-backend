@@ -40,12 +40,12 @@ async function getAll(): Promise<MedicalRecord[]> {
   return returnedMedicalRecords;
 }
 
-async function update(id: string, profile: Partial<MedicalRecord>): Promise<boolean | null> {
+async function update(id: string, updateMedicalRecordDto: Partial<MedicalRecord>): Promise<boolean | null> {
   const returnedMedicalRecords = await getUnique(id);
 
   if (returnedMedicalRecords === null) return null;
 
-  const partialMedicalRecords = medicalRecordsSchema.partial().parse(profile);
+  const partialMedicalRecords = medicalRecordsSchema.partial().parse(updateMedicalRecordDto);
 
   await dbClient.update(medicalRecords).set(partialMedicalRecords).where(eq(medicalRecords.id, returnedMedicalRecords.id));
 
