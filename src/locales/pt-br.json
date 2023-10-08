@@ -40,7 +40,7 @@
   "nurse": {
     "notFound": "Enfermeiro(a) não encontrado"
   },
-  "patientTransfusionHistory": {
-    "notFound": "Histórico de transfusão de paciente não encontrado"
+  "patientBloodData": {
+    "notFound": "Dados sanguíneos do paciente não encontrado"
   }
 }

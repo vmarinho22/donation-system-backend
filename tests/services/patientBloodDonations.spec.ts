@@ -1,4 +1,4 @@
-import patientTransfusionHistoryService, { CreatePatientTransfusionHistoryDto, PatientTransfusionHistory } from '../../src/services/patientTransfusionHistory';
+import patientBloodDonationsService, { CreatePatientBloodDonationDto, PatientBloodDonation } from '../../src/services/patientBloodDonations';
 import dbClient from '../../src/clients/db';
 
 jest.mock('../../src/clients/db');
@@ -16,24 +16,27 @@ describe('patientTransfusionHistory service', () => {
 
   const mockedSendedPatientTransfusionHistory = {
     date: new Date(),
+    bagIdentifier: 'test',
     location: 'Hospital test',
     reason: 'test',
     typeTransfusedBloodComponent: 'test',
-    quantity: 20.5,
+    donatedComponent: 'test',
+    finality: 'test',
+    bagQuantity: 20.5,
     results: 'test',
     reactions: null,
     notes: null,
     patientId: id,
     doctorId: id,
     nurseId: id,
-  } satisfies CreatePatientTransfusionHistoryDto;
+  } satisfies CreatePatientBloodDonationDto;
 
   const mockedReturnedPatientTransfusionHistory = {
     id,
     ...mockedSendedPatientTransfusionHistory,
     createdAt: new Date(),
     updatedAt: new Date(),
-  } satisfies PatientTransfusionHistory;
+  } satisfies PatientBloodDonation;
 
   beforeEach(() => {
     mockInsert = jest.fn().mockReturnThis();
@@ -52,7 +55,7 @@ describe('patientTransfusionHistory service', () => {
   });
 
   describe('create', () => {
-    it('should create and return a patient transfusion history', async () => {
+    it('should create and return a patient blood donation', async () => {
       mockInsert.mockImplementation(() => ({
         values: mockValues,
       }));
@@ -61,7 +64,7 @@ describe('patientTransfusionHistory service', () => {
       }));
       mockReturning.mockImplementation(() => [mockedReturnedPatientTransfusionHistory]);
 
-      const createdDoctorId = await patientTransfusionHistoryService.create(mockedSendedPatientTransfusionHistory);
+      const createdDoctorId = await patientBloodDonationsService.create(mockedSendedPatientTransfusionHistory);
 
       expect(createdDoctorId).toEqual(id);
     });
@@ -75,14 +78,14 @@ describe('patientTransfusionHistory service', () => {
       }));
       mockReturning.mockImplementation(() => []);
 
-      const createdDoctorId = await patientTransfusionHistoryService.create(mockedSendedPatientTransfusionHistory);
+      const createdDoctorId = await patientBloodDonationsService.create(mockedSendedPatientTransfusionHistory);
 
       expect(createdDoctorId).toEqual(null);
     });
   });
 
   describe('getUnique', () => {
-    it('should return a patient transfusion history', async () => {
+    it('should return a patient blood donation', async () => {
       mockSelect.mockImplementation(() => ({
         from: mockFrom,
       }));
@@ -91,27 +94,27 @@ describe('patientTransfusionHistory service', () => {
         where: jest.fn().mockResolvedValue([mockedReturnedPatientTransfusionHistory])
       }));
 
-      const returnedDoctor = await patientTransfusionHistoryService.getUnique(id);
+      const returnedDoctor = await patientBloodDonationsService.getUnique(id);
 
       expect(returnedDoctor).toEqual(mockedReturnedPatientTransfusionHistory);
     });
   });
 
   describe('getAll', () => {
-    it('should return all patient transfusion historys', async () => {
+    it('should return all patient blood donations', async () => {
       mockSelect.mockImplementation(() => ({
         from: mockFrom,
       }));
       mockFrom.mockImplementation(() => [mockedReturnedPatientTransfusionHistory]);
 
-      const returnedDoctors = await patientTransfusionHistoryService.getAll();
+      const returnedDoctors = await patientBloodDonationsService.getAll();
 
       expect(returnedDoctors).toEqual([mockedReturnedPatientTransfusionHistory]);
     });
   });
 
-  describe('getUniqueByPatientId', () => {
-    it('should return a patient transfusion history', async () => {
+  describe('getByPatientId', () => {
+    it('should return a patient blood donation', async () => {
       mockSelect.mockImplementation(() => ({
         from: mockFrom,
       }));
@@ -119,9 +122,9 @@ describe('patientTransfusionHistory service', () => {
         where: jest.fn().mockResolvedValue([mockedReturnedPatientTransfusionHistory])
       }));
 
-      const returnedDoctor = await patientTransfusionHistoryService.getUniqueByPatientId(id);
+      const returnedDoctor = await patientBloodDonationsService.getByPatientId(id);
 
-      expect(returnedDoctor).toEqual(mockedReturnedPatientTransfusionHistory);
+      expect(returnedDoctor).toEqual([mockedReturnedPatientTransfusionHistory]);
     });
   });
 
@@ -146,7 +149,7 @@ describe('patientTransfusionHistory service', () => {
         returning: jest.fn().mockResolvedValue([mockedReturnedPatientTransfusionHistory])
       }));
 
-      const updated = await patientTransfusionHistoryService.update(id, mockedSendedPatientTransfusionHistory);
+      const updated = await patientBloodDonationsService.update(id, mockedSendedPatientTransfusionHistory);
 
       expect(updated).toEqual(true);
     });
@@ -160,7 +163,7 @@ describe('patientTransfusionHistory service', () => {
         where: jest.fn().mockResolvedValue([])
       }));
 
-      const updated = await patientTransfusionHistoryService.update(id, mockedSendedPatientTransfusionHistory);
+      const updated = await patientBloodDonationsService.update(id, mockedSendedPatientTransfusionHistory);
 
       expect(updated).toEqual(null);
     });
