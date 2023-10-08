@@ -87,12 +87,12 @@ async function getAll(): Promise<Profile[]> {
   return returnedProfiles;
 }
 
-async function update(id: string, profile: Partial<Profile>): Promise<boolean | null> {
+async function update(id: string, updateProfileDto: Partial<Profile>): Promise<boolean | null> {
   const returnedProfile = await getUnique(id);
 
   if (returnedProfile === null) return null;
 
-  const partialProfile = profileSchema.partial().parse(profile);
+  const partialProfile = profileSchema.partial().parse(updateProfileDto);
 
   await dbClient.update(profiles).set(partialProfile).where(eq(profiles.id, returnedProfile.id));
 

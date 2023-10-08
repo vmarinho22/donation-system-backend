@@ -56,12 +56,12 @@ async function getUniqueByUserId(userId: string): Promise<Patient | null> {
   return returnedPatient[0];
 }
 
-async function update(id: string, profile: Partial<Patient>): Promise<boolean | null> {
+async function update(id: string, updatePatientDto: Partial<Patient>): Promise<boolean | null> {
   const returnedPatient = await getUnique(id);
 
   if (returnedPatient === null) return null;
 
-  const partialPatient = patientSchema.partial().parse(profile);
+  const partialPatient = patientSchema.partial().parse(updatePatientDto);
 
   await dbClient.update(patients).set(partialPatient).where(eq(patients.id, returnedPatient.id));
 
