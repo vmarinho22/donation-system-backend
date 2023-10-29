@@ -1,34 +1,36 @@
 import { address } from './../db/schema/address';
-import { FastifyReply, FastifyRequest } from "fastify";
-import registerService from "../services/register";
-import { InferModel } from "drizzle-orm";
-import { users } from "../db/schema/users";
-import { profiles } from "../db/schema/profiles";
-import ApiError from "../utils/errors/apiError";
+import { FastifyReply, FastifyRequest } from 'fastify';
+import registerService from '../services/register';
+import { InferModel } from 'drizzle-orm';
+import { users } from '../db/schema/users';
+import { profiles } from '../db/schema/profiles';
+import ApiError from '../utils/errors/apiError';
 import errorDistributor from '../utils/errorDistributor';
 
-
 export type RegisterDTO = {
-  user: Omit<InferModel<typeof users, "insert">, 'profileId'>;
-  profile: InferModel<typeof profiles, "insert">;
-  address: InferModel<typeof address, "insert">;
-}
+  user: Omit<InferModel<typeof users, 'insert'>, 'profileId'>;
+  profile: InferModel<typeof profiles, 'insert'>;
+  address?: InferModel<typeof address, 'insert'>;
+};
 
-async function register(_req: FastifyRequest<{ Body: RegisterDTO }>, _reply: FastifyReply) {
+async function register(
+  _req: FastifyRequest<{ Body: RegisterDTO }>,
+  _reply: FastifyReply,
+) {
   const body = _req.body ?? {};
 
-  const dataValidation = ['user', 'profile', 'address'];
+  const dataValidation = ['user', 'profile'];
 
-  for(const data of dataValidation) {
+  for (const data of dataValidation) {
     if (!Object.hasOwn(body, data)) {
       throw new ApiError(400, _req.t('error:missingData', { key: data }));
     }
   }
-  
-  const { user, profile, address } = body;
+
+  const { user, profile, address = undefined } = body;
 
   try {
-    const data = await registerService.register({ user, profile, address});
+    const data = await registerService.register({ user, profile, address });
     _reply.send(data);
   } catch (error) {
     errorDistributor(error);
@@ -36,5 +38,5 @@ async function register(_req: FastifyRequest<{ Body: RegisterDTO }>, _reply: Fas
 }
 
 export default {
-  register
-}
+  register,
+};
