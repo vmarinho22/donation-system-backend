@@ -11,7 +11,7 @@ export const profiles = pgTable('profiles', {
   lang: langEnum('lang').default('pt_br'),
   photoUrl: varchar('photo_url', { length: 255 }).notNull(),
   phone: varchar('phone', { length: 255 }).notNull(),
-  addressId: uuid('address_id').references(() => address.id).notNull(),
+  addressId: uuid('address_id').references(() => address.id),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

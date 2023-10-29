@@ -25,7 +25,6 @@ async function create(
     'lastName',
     'photoUrl',
     'phone',
-    'addressId',
   ];
 
   const attrError = hasNoMandatoryAttribute(dataValidation, body);
@@ -34,7 +33,7 @@ async function create(
     throw new ApiError(400, _req.t('error:missingData', { key: attrError }));
   }
 
-  const { firstName, lastName, socialName = null, lang = null, photoUrl, phone, addressId } =
+  const { firstName, lastName, socialName = null, lang = null, photoUrl, phone, addressId = null } =
     body;
 
   try {

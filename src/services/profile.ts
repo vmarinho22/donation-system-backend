@@ -13,7 +13,7 @@ const profileSchema = z.object({
   lang: z.enum(['pt_br', 'en_us']).nullable(),
   photoUrl: z.string(),
   phone: z.string(),
-  addressId: z.string().uuid(),
+  addressId: z.string().uuid().nullable(),
   createdAt: z.date().nullable(),
   updatedAt: z.date().nullable(),
 });
@@ -52,7 +52,7 @@ const createProfileDtoSchema = z.object({
   lang: z.enum(['pt_br', 'en_us']).nullable(),
   photoUrl: z.string(),
   phone: z.string(),
-  addressId: z.string().uuid(),
+  addressId: z.string().uuid().nullable(),
 });
 
 type CreateProfileDto = z.infer<typeof createProfileDtoSchema>;
