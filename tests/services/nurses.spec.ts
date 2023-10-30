@@ -9,6 +9,7 @@ describe('nurses service', () => {
   let mockReturning: jest.Mock;
   let mockSelect: jest.Mock;
   let mockFrom: jest.Mock;
+  let mockLeftJoin: jest.Mock;
   let mockUpdate: jest.Mock;
   let mockSet: jest.Mock;
   let mockDelete: jest.Mock;
@@ -39,6 +40,7 @@ describe('nurses service', () => {
     
     mockSelect = jest.fn().mockReturnThis();
     mockFrom = jest.fn().mockReturnThis();
+    mockLeftJoin = jest.fn().mockReturnThis();
     
     mockUpdate = jest.fn().mockReturnThis();
     mockSet = jest.fn().mockReturnThis();
@@ -88,8 +90,16 @@ describe('nurses service', () => {
       }));
       
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedNurse])
+        leftJoin: mockLeftJoin,
       }));
+
+      mockLeftJoin
+        .mockImplementationOnce(() => ({
+          leftJoin: mockLeftJoin,
+        }))
+        .mockImplementationOnce(() => ({
+          where: jest.fn().mockResolvedValue([mockedReturnedNurse]),
+        }));
 
       const returnedDoctor = await nursesService.getUnique(id);
 
@@ -102,7 +112,16 @@ describe('nurses service', () => {
       mockSelect.mockImplementation(() => ({
         from: mockFrom,
       }));
-      mockFrom.mockImplementation(() => [mockedReturnedNurse]);
+
+      mockFrom.mockImplementation(() => ({
+        leftJoin: mockLeftJoin,
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: jest.fn().mockResolvedValue([mockedReturnedNurse]),
+      }))
+
 
       const returnedDoctors = await nursesService.getAll();
 
@@ -116,8 +135,16 @@ describe('nurses service', () => {
         from: mockFrom,
       }));
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedNurse])
+        leftJoin: mockLeftJoin,
       }));
+
+      mockLeftJoin
+        .mockImplementationOnce(() => ({
+          leftJoin: mockLeftJoin,
+        }))
+        .mockImplementationOnce(() => ({
+          where: jest.fn().mockResolvedValue([mockedReturnedNurse]),
+        }));
 
       const returnedDoctor = await nursesService.getUniqueByUserId(id);
 
@@ -132,8 +159,17 @@ describe('nurses service', () => {
       }));
 
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedNurse])
+        leftJoin: mockLeftJoin,
       }));
+
+      mockLeftJoin
+        .mockImplementationOnce(() => ({
+          leftJoin: mockLeftJoin,
+        }))
+        .mockImplementationOnce(() => ({
+          where: jest.fn().mockResolvedValue([mockedReturnedNurse]),
+        }));
+
 
       mockUpdate.mockImplementation(() => ({
         set: mockSet,
@@ -157,8 +193,16 @@ describe('nurses service', () => {
       }));
       
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([])
+        leftJoin: mockLeftJoin,
       }));
+
+      mockLeftJoin
+        .mockImplementationOnce(() => ({
+          leftJoin: mockLeftJoin,
+        }))
+        .mockImplementationOnce(() => ({
+          where: jest.fn().mockResolvedValue([]),
+        }));
 
       const updated = await nursesService.update(id, mockedSendedNurse);
 
