@@ -14,7 +14,7 @@ async function register(data: RegisterDTO) {
     email: z.string().email(),
     password: z.string(),
     cpf: z.string().length(11),
-    role: z.enum(['patient', 'admin', 'entity', 'doctor']),
+    role: z.enum(['patient', 'admin', 'entity', 'doctor', 'nurse']),
   });
 
   const profileInsertSchema = z.object({
