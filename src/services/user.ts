@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 const userSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
-  role: z.enum(["patient", "admin", "entity", "doctor"]).nullable(),
+  role: z.enum(["patient", "admin", "entity", "doctor", "nurse"]).nullable(),
   lastLogin: z.date().nullable(),
   createdAt: z.date().nullable(),
   updatedAt: z.date().nullable(),
