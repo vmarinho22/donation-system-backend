@@ -42,5 +42,8 @@
   },
   "patientBloodData": {
     "notFound": "Dados sanguíneos do paciente não encontrado"
+  },
+  "donationPreRating": {
+    "notFound": "Pré-avaliação de doação não encontrado"
   }
 }
