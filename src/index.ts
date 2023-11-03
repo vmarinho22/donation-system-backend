@@ -21,6 +21,7 @@ import doctorsRouter from './routes/doctors';
 import nursesRouter from './routes/nurses';
 import PatientBloodDonationsRouter from './routes/patientBloodDonations';
 import patientBloodDataRouter from './routes/patientBloodData';
+import donationPreRatingRouter from './routes/donationPreRating';
 
 import lang from './config/lang';
 
@@ -57,7 +58,7 @@ server.register(doctorsRouter, { prefix: '/doctors' });
 server.register(nursesRouter, { prefix: '/nurses' });
 server.register(PatientBloodDonationsRouter, { prefix: '/patient-blood-donations' });
 server.register(patientBloodDataRouter, { prefix: '/patient-blood-data' });
-
+server.register(donationPreRatingRouter, { prefix: '/donation-pre-ratings' });
 
 server.setErrorHandler(function (error, request, reply) {
   this.log.error(error);
