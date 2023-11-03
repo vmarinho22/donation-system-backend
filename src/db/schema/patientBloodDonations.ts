@@ -1,3 +1,4 @@
+import { donationPreRating } from './donationPreRating';
 import { uuid, pgTable, varchar, timestamp, real } from 'drizzle-orm/pg-core';
 import { patients } from './patients';
 import { doctors } from './doctors';
@@ -19,6 +20,7 @@ export const patientBloodDonations = pgTable('patient_blood_donations', {
   patientId: uuid('patient_id').references(() => patients.id).notNull(),
   doctorId: uuid('doctor_id').references(() => doctors.id).notNull(),
   nurseId: uuid('nurse_id').references(() => nurses.id).notNull(),
+  donationPreRatingId: uuid('donation_pre_rating_id').references(() => donationPreRating.id).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });

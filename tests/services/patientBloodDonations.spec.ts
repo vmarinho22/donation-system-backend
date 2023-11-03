@@ -29,6 +29,7 @@ describe('patientTransfusionHistory service', () => {
     patientId: id,
     doctorId: id,
     nurseId: id,
+    donationPreRatingId: id,
   } satisfies CreatePatientBloodDonationDto;
 
   const mockedReturnedPatientTransfusionHistory = {
