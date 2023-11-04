@@ -52,6 +52,17 @@ async function getAll(): Promise<DonationPreRating[]> {
   return returnedDonationPreRatings;
 }
 
+async function getAllByPatientId(patientId: string): Promise<DonationPreRating[]> {
+  const idSchema = z.string().uuid();
+
+  const parsedId = idSchema.parse(patientId);
+
+  const returnedDonationPreRatings = await dbClient.select().from(donationPreRating).where(eq(donationPreRating.patientId, parsedId));
+
+  return returnedDonationPreRatings;
+
+}
+
 async function getUniqueByDoctorId(userId: string): Promise<DonationPreRating | null> {
   const idSchema = z.string().uuid();
 
@@ -86,6 +97,7 @@ export default {
   create,
   getUnique,
   getAll,
+  getAllByPatientId,
   getUniqueByDoctorId,
   update
 }

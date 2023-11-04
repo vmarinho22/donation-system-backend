@@ -59,9 +59,9 @@ describe('donationPreRatingService service', () => {
       }));
       mockReturning.mockImplementation(() => [mockedReturnedDonationPreRating]);
 
-      const createdPatientMedicamentId = await donationPreRatingService.create(mockedSendedDonationPreRating);
+      const createdDonationPreRating = await donationPreRatingService.create(mockedSendedDonationPreRating);
 
-      expect(createdPatientMedicamentId).toEqual(id);
+      expect(createdDonationPreRating).toEqual(id);
     });
 
     it('should return null if not created', async () => {
@@ -73,9 +73,9 @@ describe('donationPreRatingService service', () => {
       }));
       mockReturning.mockImplementation(() => []);
 
-      const createdPatientMedicamentId = await donationPreRatingService.create(mockedSendedDonationPreRating);
+      const createdDonationPreRating = await donationPreRatingService.create(mockedSendedDonationPreRating);
 
-      expect(createdPatientMedicamentId).toEqual(null);
+      expect(createdDonationPreRating).toEqual(null);
     });
   });
 
@@ -89,9 +89,9 @@ describe('donationPreRatingService service', () => {
         where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
       }));
 
-      const returnedPatientMedicament = await donationPreRatingService.getUnique(id);
+      const returnedDonationPreRating = await donationPreRatingService.getUnique(id);
 
-      expect(returnedPatientMedicament).toEqual(mockedReturnedDonationPreRating);
+      expect(returnedDonationPreRating).toEqual(mockedReturnedDonationPreRating);
     });
   });
 
@@ -102,9 +102,24 @@ describe('donationPreRatingService service', () => {
       }));
       mockFrom.mockImplementation(() => [mockedReturnedDonationPreRating]);
 
-      const returnedPatientMedicaments = await donationPreRatingService.getAll();
+      const returnedDonationPreRatings = await donationPreRatingService.getAll();
 
-      expect(returnedPatientMedicaments).toEqual([mockedReturnedDonationPreRating]);
+      expect(returnedDonationPreRatings).toEqual([mockedReturnedDonationPreRating]);
+    });
+  });
+
+  describe('getAllByPatientId', () => {
+    it('should return all donation pre rating by patient id', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+      mockFrom.mockImplementation(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
+      }));
+
+      const returnedDonationPreRatings = await donationPreRatingService.getAllByPatientId(id);
+
+      expect(returnedDonationPreRatings).toEqual([mockedReturnedDonationPreRating]);
     });
   });
 
@@ -117,9 +132,9 @@ describe('donationPreRatingService service', () => {
         where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
       }));
 
-      const returnedPatientMedicament = await donationPreRatingService.getUniqueByDoctorId(id);
+      const returnedDonationPreRating = await donationPreRatingService.getUniqueByDoctorId(id);
 
-      expect(returnedPatientMedicament).toEqual(mockedReturnedDonationPreRating);
+      expect(returnedDonationPreRating).toEqual(mockedReturnedDonationPreRating);
     });
   });
 
