@@ -33,6 +33,18 @@ async function getAll(_req: FastifyRequest, _reply: FastifyReply) {
   }
 }
 
+async function getAllByPatientId(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
+  const { id } = _req.params;
+
+  try {
+    const donationPreRatings = await donationPreRatingService.getAllByPatientId(id);
+
+    _reply.send(donationPreRatings);
+  } catch (error) {
+    errorDistributor(error);
+  }
+}
+
 async function getUnique(_req: FastifyRequest<{ Params: { id: string }}>, _reply: FastifyReply) {
   const { id } = _req.params;
 
@@ -85,6 +97,7 @@ async function update(_req: FastifyRequest<{ Params: { id: string }, Body: Parti
 export default {
   create,
   getAll,
+  getAllByPatientId,
   getUnique,
   getUniqueByDoctorId,
   update
