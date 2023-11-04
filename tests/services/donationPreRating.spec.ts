@@ -11,6 +11,7 @@ describe('donationPreRatingService service', () => {
   let mockFrom: jest.Mock;
   let mockUpdate: jest.Mock;
   let mockSet: jest.Mock;
+  let mockLeftJoin: jest.Mock;
 
   const id = "184e3edc-f1d3-4844-8766-310701a3eae7"
 
@@ -23,6 +24,7 @@ describe('donationPreRatingService service', () => {
     type: 'blood',
     approved: true,
     doctorId: id,
+    doctorName: 'firstName lastName',
     patientId: id,
   } satisfies CreateDonationPreRatingDto;
 
@@ -33,6 +35,12 @@ describe('donationPreRatingService service', () => {
     updatedAt: new Date(),
   } satisfies DonationPreRating;
 
+  const mockedReturnedQuery = {
+    donationPreRating: mockedReturnedDonationPreRating,
+    firstName: 'firstName',
+    lastName: 'lastName',
+  }
+
   beforeEach(() => {
     mockInsert = jest.fn().mockReturnThis();
     mockValues = jest.fn().mockReturnThis();
@@ -40,6 +48,7 @@ describe('donationPreRatingService service', () => {
     
     mockSelect = jest.fn().mockReturnThis();
     mockFrom = jest.fn().mockReturnThis();
+    mockLeftJoin = jest.fn().mockReturnThis();
     
     mockUpdate = jest.fn().mockReturnThis();
     mockSet = jest.fn().mockReturnThis();
@@ -86,7 +95,18 @@ describe('donationPreRatingService service', () => {
       }));
       
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
+        leftJoin: mockLeftJoin
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedQuery]),
       }));
 
       const returnedDonationPreRating = await donationPreRatingService.getUnique(id);
@@ -100,8 +120,18 @@ describe('donationPreRatingService service', () => {
       mockSelect.mockImplementation(() => ({
         from: mockFrom,
       }));
-      mockFrom.mockImplementation(() => [mockedReturnedDonationPreRating]);
+      mockFrom.mockImplementation(() => ({
+        leftJoin: mockLeftJoin
+      }));
 
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: jest.fn().mockResolvedValue([mockedReturnedQuery]),
+      }))
+    
       const returnedDonationPreRatings = await donationPreRatingService.getAll();
 
       expect(returnedDonationPreRatings).toEqual([mockedReturnedDonationPreRating]);
@@ -114,7 +144,18 @@ describe('donationPreRatingService service', () => {
         from: mockFrom,
       }));
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
+        leftJoin: mockLeftJoin
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedQuery]),
       }));
 
       const returnedDonationPreRatings = await donationPreRatingService.getAllByPatientId(id);
@@ -129,7 +170,18 @@ describe('donationPreRatingService service', () => {
         from: mockFrom,
       }));
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
+        leftJoin: mockLeftJoin
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedQuery]),
       }));
 
       const returnedDonationPreRating = await donationPreRatingService.getUniqueByDoctorId(id);
@@ -145,7 +197,18 @@ describe('donationPreRatingService service', () => {
       }));
 
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([mockedReturnedDonationPreRating])
+        leftJoin: mockLeftJoin
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedQuery]),
       }));
 
       mockUpdate.mockImplementation(() => ({
@@ -170,7 +233,18 @@ describe('donationPreRatingService service', () => {
       }));
       
       mockFrom.mockImplementation(() => ({
-        where: jest.fn().mockResolvedValue([])
+        leftJoin: mockLeftJoin
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        where: jest.fn().mockResolvedValue([]),
       }));
 
       const updated = await donationPreRatingService.update(id, mockedSendedDonationPreRating);
