@@ -1,5 +1,6 @@
 import { uuid, pgEnum, pgTable, varchar, timestamp, boolean } from 'drizzle-orm/pg-core';
 import { doctors } from './doctors';
+import { patients } from './patients';
 
 export const donationTypeEnum = pgEnum('donation_type', ['blood', 'milk']);
 
@@ -17,6 +18,7 @@ export const donationPreRating = pgTable('pre_donation_rating', {
   doctorName: varchar('doctor_name', { length: 255 }),
   doctorRegistrationNumber: varchar('doctor_registration_number', { length: 255 }),
   doctorId: uuid('doctor_id').references(() => doctors.id),
+  patientId: uuid('patient_id').references(() => patients.id).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });

@@ -23,6 +23,7 @@ describe('donationPreRatingService service', () => {
     type: 'blood',
     approved: true,
     doctorId: id,
+    patientId: id,
   } satisfies CreateDonationPreRatingDto;
 
   const mockedReturnedDonationPreRating = {
