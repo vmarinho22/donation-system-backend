@@ -8,6 +8,7 @@ const donationPreRatingRouter = async (fastify: FastifyInstance) => {
   fastify.post('/', donationPreRatingController.create);
   fastify.get('/', donationPreRatingController.getAll);
   fastify.get('/by-patient/:id', donationPreRatingController.getAllByPatientId);
+  fastify.get('/by-doctor/:id', donationPreRatingController.getAllByDoctorId);
   fastify.get('/:id', donationPreRatingController.getUnique);
   fastify.get('/by-doctor/:id', donationPreRatingController.getUniqueByDoctorId);
   fastify.put('/:id', donationPreRatingController.update);

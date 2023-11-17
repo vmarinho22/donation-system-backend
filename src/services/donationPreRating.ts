@@ -112,6 +112,32 @@ async function getAllByPatientId(
   return formattedDonationPreRatings;
 }
 
+async function getAllByDoctorId(
+  patientId: string,
+): Promise<DonationPreRating[]> {
+  const idSchema = z.string().uuid();
+
+  const parsedId = idSchema.parse(patientId);
+
+  const returnedDonationPreRatings: DonationPreRatingQuery[] = await dbClient
+    .select({
+      donationPreRating: donationPreRating,
+      firstName: profiles.firstName,
+      lastName: profiles.lastName,
+      socialName: profiles.socialName,
+      registrationNumber: doctors.registrationNumber,
+    })
+    .from(donationPreRating)
+    .leftJoin(doctors, eq(donationPreRating.doctorId, doctors.id))
+    .leftJoin(users, eq(doctors.userId, users.id))
+    .leftJoin(profiles, eq(users.profileId, profiles.id))
+    .where(eq(donationPreRating.doctorId, parsedId));
+
+  const formattedDonationPreRatings = returnedDonationPreRatings.map((data) => formatDonationPreRatingReturn(data));
+
+  return formattedDonationPreRatings;
+}
+
 async function getUniqueByDoctorId(
   userId: string,
 ): Promise<DonationPreRating | null> {
@@ -202,6 +228,7 @@ export default {
   getUnique,
   getAll,
   getAllByPatientId,
+  getAllByDoctorId,
   getUniqueByDoctorId,
   update,
 };

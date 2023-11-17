@@ -164,6 +164,32 @@ describe('donationPreRatingService service', () => {
     });
   });
 
+  describe('getAllByDoctorId', () => {
+    it('should return all donation pre rating by doctor id', async () => {
+      mockSelect.mockImplementation(() => ({
+        from: mockFrom,
+      }));
+      mockFrom.mockImplementation(() => ({
+        leftJoin: mockLeftJoin
+      }));
+
+      mockLeftJoin
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        leftJoin: mockLeftJoin,
+      }))
+      .mockImplementationOnce(() => ({
+        where: jest.fn().mockResolvedValue([mockedReturnedQuery]),
+      }));
+
+      const returnedDonationPreRatings = await donationPreRatingService.getAllByDoctorId(id);
+
+      expect(returnedDonationPreRatings).toEqual([mockedReturnedDonationPreRating]);
+    });
+  });
+
   describe('getUniqueByDoctorId', () => {
     it('should return a donation pre rating', async () => {
       mockSelect.mockImplementation(() => ({
