@@ -24,6 +24,7 @@ async function getUnique(id: string): Promise<User | null> {
     email: users.email,
     role: users.role,
     lastLogin: users.lastLogin,
+    profileId: users.profileId,
     createdAt: users.createdAt,
     updatedAt: users.updatedAt,
   }).from(users).where(eq(users.id, parsedId));
@@ -39,6 +40,7 @@ async function getAll(): Promise<User[]> {
     email: users.email,
     role: users.role,
     lastLogin: users.lastLogin,
+    profileId: users.profileId,
     createdAt: users.createdAt,
     updatedAt: users.updatedAt,
   }).from(users);

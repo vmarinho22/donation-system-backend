@@ -42,7 +42,7 @@ export type FullProfile = {
     state: string;
     country: string;
     uf: string;
-  }
+  } | null;
 }
 
 const createProfileDtoSchema = z.object({
@@ -130,8 +130,10 @@ async function getFullProfile(id: string): Promise<FullProfile | null> {
     }
   }).from(profiles)
   .innerJoin(users, eq(users.profileId, profiles.id))
-  .innerJoin(address, eq(address.id, profiles.addressId))
+  .leftJoin(address, eq(address.id, profiles.addressId))
   .where(or(eq(profiles.id, parsedId), eq(users.id, parsedId)));
+
+  console.log(returnedProfile)
 
   if (returnedProfile.length === 0) return null;
 

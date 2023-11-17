@@ -145,7 +145,7 @@ describe('profile service', () => {
       }));
 
       mockInnerJoin1.mockImplementation(() => ({
-        innerJoin: mockInnerJoin2,
+        leftJoin: mockInnerJoin2,
       }));
       
       mockInnerJoin2.mockImplementation(() => ({
